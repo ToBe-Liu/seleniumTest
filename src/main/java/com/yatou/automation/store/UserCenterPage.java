@@ -12,14 +12,10 @@ import org.openqa.selenium.support.FindBy;
  */
 public class UserCenterPage extends  Menu{
 
-    @FindBy(name="userNo")
-    WebElement userName;//用户名
+    @FindBy(id="logout")
+    WebElement logout;//退出登录
 
-    @FindBy (name="password")
-    WebElement passWord;//密码
 
-    @FindBy (xpath="//footer/button")
-    WebElement submit;//提交
 
 
     public UserCenterPage(WebDriver driver){
@@ -27,9 +23,7 @@ public class UserCenterPage extends  Menu{
     }
 
     public boolean login(String userName,String passWord){
-        type(this.userName,userName);
-        type(this.passWord,passWord);
-        click(this.submit);
+
         return  false;
     }
 }
