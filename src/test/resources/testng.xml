@@ -16,7 +16,7 @@
         <!-- 失败截图监听器 -->
         <listener class-name="com.yatou.automation.listeners.TestNGListener" />
         <!-- 自己实现的extentrepots监听器 -->
-       <!-- <listener class-name="com.yatou.automation.listeners.extent.ExtentTestNGIReporterListener" />-->
+        <listener class-name="com.yatou.automation.listeners.extent.ExtentTestNGIReporterListener" />
         <!-- 三方插件实现的extentrepots监听器 -->
        <!-- <listener class-name="com.vimalselvam.testng.listener.ExtentTestNgFormatter" />-->
     </listeners>

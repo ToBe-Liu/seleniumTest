@@ -40,12 +40,14 @@ public class LoginPage extends BasePage{
         type(this.userName,userName);
         type(this.passWord,passWord);
         click(this.submit);
-        WebElement logout = WaitUtil.fluentWait(driver,5,"没有找到成功界面！",
-                (driver1) -> driver.findElement(By.id("logout")));
-        if(logout == null ){
-            layer = WaitUtil.fluentWait(driver,5,"没有登录失败提示！",
-                    (driver1) -> driver.findElement(By.className("layui-layer-content")));
-            Assert.assertNull(layer,"登录失败：" + layer.getText());
+        WebElement isLogin = WaitUtil.concurrentFindWait(driver,5,"5秒内没有找到成功界面和错误提示！",
+                (driver1) -> driver.findElement(By.id("logout")),
+                (driver2) -> driver.findElement(By.className("layui-layer-content")));
+        if(isLogin == null ){
+            Assert.assertNull(1,"登录失败：未知原因！");
+        }
+        if(!"退出登录".equals(isLogin.getText()) ){
+            Assert.assertNull(1,"登录失败：" + isLogin.getText());
         }
 
         UserCenterPage userCenterPage = PageFactory.initElements(driver, UserCenterPage.class);

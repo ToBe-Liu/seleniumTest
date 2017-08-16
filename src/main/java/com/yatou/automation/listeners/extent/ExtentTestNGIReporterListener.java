@@ -2,11 +2,15 @@ package com.yatou.automation.listeners.extent;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.ResourceCDN;
 import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.model.Log;
 import com.aventstack.extentreports.model.TestAttribute;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.yatou.automation.utils.DateUtil;
+import com.yatou.automation.utils.ReportUtil;
 import org.testng.*;
 import org.testng.xml.XmlSuite;
 
@@ -21,19 +25,19 @@ import java.util.*;
 public class ExtentTestNGIReporterListener implements IReporter {
     //生成的路径以及文件名
     private static final String OUTPUT_FOLDER = "test-output/";
-    private static final String FILE_NAME = "index.html";
+    private static final String FILE_NAME = "index_"+ DateUtil.getCurrentTime() + ".html";
 
     private ExtentReports extent;
 
     @Override
-    public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
+    public void generateReport(List<XmlSuite>  xmlSuites, List<ISuite> suites, String outputDirectory) {
         init();
         boolean createSuiteNode = false;
         if(suites.size()>1){
             createSuiteNode=true;
         }
         for (ISuite suite : suites) {
-            Map<String, ISuiteResult> result = suite.getResults();
+            Map<String, ISuiteResult>  result = suite.getResults();
             //如果suite里面没有任何用例，直接跳过，不在报告里生成
             if(result.size()==0){
                 continue;
@@ -51,32 +55,32 @@ public class ExtentTestNGIReporterListener implements IReporter {
             if(result.size()>1){
                 createSuiteResultNode=true;
             }
+            Date suiteStartTime = null,suiteEndTime=new Date();
             for (ISuiteResult r : result.values()) {
                 ExtentTest resultNode;
                 ITestContext context = r.getTestContext();
                 if(createSuiteResultNode){
                     //没有创建suite的情况下，将在SuiteResult的创建为一级节点，否则创建为suite的一个子节点。
                     if( null == suiteTest){
-                        resultNode = extent.createTest(r.getTestContext().getName());
+                        resultNode = extent.createTest(context.getName());
                     }else{
-                        resultNode = suiteTest.createNode(r.getTestContext().getName());
+                        resultNode = suiteTest.createNode(context.getName());
                     }
                 }else{
                     resultNode = suiteTest;
                 }
                 if(resultNode != null){
-                    resultNode.getModel().setName(suite.getName()+" : "+r.getTestContext().getName());
-                    if(resultNode.getModel().hasCategory()){
-                        resultNode.assignCategory(r.getTestContext().getName());
-                    }else{
-                        resultNode.assignCategory(suite.getName(),r.getTestContext().getName());
+                    resultNode.assignCategory(suite.getName(),context.getName());
+                    if(suiteStartTime == null){
+                        suiteStartTime = context.getStartDate();
                     }
-                    resultNode.getModel().setStartTime(r.getTestContext().getStartDate());
-                    resultNode.getModel().setEndTime(r.getTestContext().getEndDate());
+                    suiteEndTime = context.getEndDate();
+                    resultNode.getModel().setStartTime(context.getStartDate());
+                    resultNode.getModel().setEndTime(context.getEndDate());
                     //统计SuiteResult下的数据
-                    int passSize = r.getTestContext().getPassedTests().size();
-                    int failSize = r.getTestContext().getFailedTests().size();
-                    int skipSize = r.getTestContext().getSkippedTests().size();
+                    int passSize = context.getPassedTests().size();
+                    int failSize = context.getFailedTests().size();
+                    int skipSize = context.getSkippedTests().size();
                     suitePassSize += passSize;
                     suiteFailSize += failSize;
                     suiteSkipSize += skipSize;
@@ -91,16 +95,14 @@ public class ExtentTestNGIReporterListener implements IReporter {
             }
             if(suiteTest!= null){
                 suiteTest.getModel().setDescription(String.format("Pass: %s ; Fail: %s ; Skip: %s ;",suitePassSize,suiteFailSize,suiteSkipSize));
+                suiteTest.getModel().setStartTime(suiteStartTime==null?new Date():suiteStartTime);
+                suiteTest.getModel().setEndTime(suiteEndTime);
                 if(suiteFailSize>0){
                     suiteTest.getModel().setStatus(Status.FAIL);
                 }
             }
 
         }
-//        for (String s : Reporter.getOutput()) {
-//            extent.setTestRunnerOutput(s);
-//        }
-
         extent.flush();
     }
 
@@ -111,18 +113,36 @@ public class ExtentTestNGIReporterListener implements IReporter {
             reportDir.mkdir();
         }
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(OUTPUT_FOLDER + FILE_NAME);
-        htmlReporter.config().setDocumentTitle("api自动化测试报告");
-        htmlReporter.config().setReportName("api自动化测试报告");
+        htmlReporter.config().setDocumentTitle(ReportUtil.getReportName());
+        htmlReporter.config().setReportName(ReportUtil.getReportName());
         htmlReporter.config().setChartVisibilityOnOpen(true);
         htmlReporter.config().setTestViewChartLocation(ChartLocation.TOP);
         htmlReporter.config().setTheme(Theme.STANDARD);
-        htmlReporter.config().setCSS(".node.level-1  ul{ display:none;} .node.level-1.active ul{display:block;}");
+        //设置点击效果：.node.level-1  ul{ display:none;} .node.level-1.active ul{display:block;}
+        //设置系统信息样式：.card-panel.environment  th:first-child{ width:30%;}
+        htmlReporter.config().setCSS(".node.level-1  ul{ display:none;} .node.level-1.active ul{display:block;}  .card-panel.environment  th:first-child{ width:30%;}");
+        htmlReporter.config().setCSS(" .preview { display: none; width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; }  .bg { width: 100%; height: 100%; background: #000; opacity: 0.5; }  .preview img { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }");
+        // 移除按键监听事件
+        htmlReporter.config().setJS("$(window).off(\"keydown\");");
+        htmlReporter.config().setJS("<script src=\"http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js\"></script>");
+        htmlReporter.config().setJS("$('.step-details img').on({click : function(){var src = $(this).attr('src');$('.preview img').attr('src', src);$('.preview').show();}});$('.preview').on({click : function(){$('.preview').hide();}})");
+        //设置静态文件的DNS 如果cdn.rawgit.com访问不了，可以设置为：ResourceCDN.EXTENTREPORTS 或者ResourceCDN.GITHUB
+        htmlReporter.config().setResourceCDN(ResourceCDN.EXTENTREPORTS);
         extent = new ExtentReports();
         extent.attachReporter(htmlReporter);
         extent.setReportUsesManualConfiguration(true);
+        // 设置系统信息
+        Properties properties = System.getProperties();
+        extent.setSystemInfo("os.name",properties.getProperty("os.name","未知"));
+        extent.setSystemInfo("os.arch",properties.getProperty("os.arch","未知"));
+        extent.setSystemInfo("os.version",properties.getProperty("os.version","未知"));
+        extent.setSystemInfo("java.version",properties.getProperty("java.version","未知"));
+        extent.setSystemInfo("java.home",properties.getProperty("java.home","未知"));
+        extent.setSystemInfo("user.name",properties.getProperty("user.name","未知"));
+        extent.setSystemInfo("user.dir",properties.getProperty("user.dir","未知"));
     }
 
-    private void buildTestNodes(ExtentTest extenttest, IResultMap tests, Status status) {
+    private void buildTestNodes(ExtentTest extenttest,IResultMap tests, Status status) {
         //存在父节点时，获取父节点的标签
         String[] categories=new String[0];
         if(extenttest != null ){
@@ -164,7 +184,7 @@ public class ExtentTestNGIReporterListener implements IReporter {
                     //作为子节点进行创建时，设置同父节点的标签一致，便于报告检索。
                     test = extenttest.createNode(name).assignCategory(categories);
                 }
-                //test.getModel().setDescription(description.toString());
+                test.getModel().setDescription(result.getMethod().getDescription());
                 //test = extent.createTest(result.getMethod().getMethodName());
                 for (String group : result.getMethod().getGroups())
                     test.assignCategory(group);
@@ -180,7 +200,19 @@ public class ExtentTestNGIReporterListener implements IReporter {
                 else {
                     test.log(status, "Test " + status.toString().toLowerCase() + "ed");
                 }
-
+                //设置log的时间，根据ReportUtil.log()的特定格式进行处理获取数据log的时间
+                Iterator logIterator = test.getModel().getLogContext().getIterator();
+                while (logIterator.hasNext()){
+                    Log log = (Log) logIterator.next();
+                    String details = log.getDetails();
+                    if(details.contains(ReportUtil.getSpiltTimeAndMsg())){
+                        String time = details.split(ReportUtil.getSpiltTimeAndMsg())[0];
+                        log.setTimestamp(getTime(Long.valueOf(time)));
+                        log.setDetails(details.substring(time.length()+ReportUtil.getSpiltTimeAndMsg().length()));
+                    }else{
+                        log.setTimestamp(getTime(result.getEndMillis()));
+                    }
+                }
                 test.getModel().setStartTime(getTime(result.getStartMillis()));
                 test.getModel().setEndTime(getTime(result.getEndMillis()));
             }

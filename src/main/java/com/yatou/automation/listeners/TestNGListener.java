@@ -30,18 +30,18 @@ public class TestNGListener extends TestListenerAdapter {
 
     @Override
     public void onTestSuccess(ITestResult tr) {
-        Logger.log("Test Success");
+        Logger.log("测试成功！");
         super.onTestSuccess(tr);
     }
 
     @Override
     public void onTestFailure(ITestResult tr) {
-        Logger.log("Test Failure");
+        Logger.log("测试失败！");
         super.onTestFailure(tr);
         Reporter.setCurrentTestResult(tr);
         File screenShotFile = new File(new File("").getAbsolutePath() + "/Screenshots/" + tr.getName()+"_"+ DateUtil.getCurrentTime() + ".jpg");
-        File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        String screenshotAs = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+        File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);//本地保存文件
+        String screenshotAs = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);//测试报告显示base64
         Reporter.log("<img src='data:image/jpg;base64,"+screenshotAs+"' hight='100' width='100'/>");
         try {
             // 拷贝截图文件到我们项目./Screenshots
@@ -53,19 +53,19 @@ public class TestNGListener extends TestListenerAdapter {
 
     @Override
     public void onTestSkipped(ITestResult tr) {
-        Logger.log("Test Skipped");
+        Logger.log("测试跳过！");
         super.onTestSkipped(tr);
     }
 
     @Override
     public void onStart(ITestContext testContext) {
-        Logger.log("Test Start");
+        Logger.log("测试开始！");
         super.onStart(testContext);
     }
 
     @Override
     public void onFinish(ITestContext testContext) {
-        Logger.log("Test Finish");
+        Logger.log("测试完成！");
         super.onFinish(testContext);
         /*Iterator<ITestResult> listOfFailedTests = testContext.getFailedTests().getAllResults().iterator();
         while (listOfFailedTests.hasNext()) {
