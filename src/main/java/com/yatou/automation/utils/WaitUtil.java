@@ -1,6 +1,7 @@
 package com.yatou.automation.utils;
 
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -20,11 +21,19 @@ import java.util.function.Function;
 public class WaitUtil {
 
 
-    public static WebElement fluentWait(WebDriver driver,Function<WebDriver, WebElement> isTrue) {
+    public static WebElement fluentWait(WebDriver driver,int time,String msg,Function<WebDriver, WebElement> isTrue) {
+        WebElement element = null;
         Wait<WebDriver> wait = new FluentWait(driver)
-                .withTimeout(10, TimeUnit.SECONDS)
+                .withTimeout(time, TimeUnit.SECONDS)
                 .pollingEvery(500, TimeUnit.MILLISECONDS)
                 .ignoring(NoSuchElementException.class);
-        return wait.until(isTrue);
+        try {
+            element = wait.until(isTrue);
+        }catch (TimeoutException e) {
+            Logger.log(msg);
+        } catch (NoSuchElementException e) {
+            Logger.log(msg);
+        }
+        return element;
     }
 }

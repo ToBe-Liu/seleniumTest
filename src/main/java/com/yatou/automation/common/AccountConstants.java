@@ -17,16 +17,20 @@ import java.util.stream.Collectors;
 import static com.google.inject.name.Names.named;
 
 /**
- * 门店常量
+ * 账户常量
  *
  * @author LiuXingHai
  * @date 2017-08-15
  */
-public class StoreConstants {
+public class AccountConstants {
     @Inject
-    @Named("store.loginURL")
-    public static String LOGINURL;
-    private static final Logger logger = LoggerFactory.getLogger(StoreConstants.class);
+    @Named("store.adviser_username")
+    public static String ADVISER_USERNAME;
+    @Inject
+    @Named("store.adviser_password")
+    public static String ADVISER_PASSWORD;
+
+    private static final Logger logger = LoggerFactory.getLogger(AccountConstants.class);
 
     static {
         com.google.inject.Injector injector = Guice.createInjector(new Module() {
@@ -35,30 +39,25 @@ public class StoreConstants {
                 Properties p = new Properties();
                 try {
                     p.load(new InputStreamReader(this.getClass()
-                            .getResourceAsStream("/store.properties")));
+                            .getResourceAsStream("/storeaccount.properties")));
                 } catch (IOException e) {
                     e.printStackTrace();
                     assert false;
                 }
                 String use = (String) p.get("use");
                 if (use == null || "".equals(use.trim())) {
-                    logger.error("store.properties没有指定use属性或use属性值为空！");
+                    logger.error("storeaccount.properties没有指定use属性或use属性值为空！");
                 }
                 Map<Object, Object> collect = p.entrySet().stream()
                         .filter(map -> map.getKey().toString().contains("_" + use))
-                        .collect(Collectors.toMap(map -> map.getKey().toString().replace("_" + use,""), map -> map.getValue()));
+                        .collect(Collectors.toMap(map -> map.getKey().toString().replace("_" + use,"") , map -> map
+                                .getValue()));
                 collect.forEach((k,v) -> {
                     String key = (String) k;
                     String value = (String) v;
                     binder.bindConstant().annotatedWith(named("store." + key)).to(value);
-                    binder.requestStaticInjection(StoreConstants.class);
+                    binder.requestStaticInjection(AccountConstants.class);
                 });
-                /*while (e.hasMoreElements()) {
-                    String key = (String) e.nextElement();
-                    String value = (String) p.get(key);
-                    binder.bindConstant().annotatedWith(named("store." + key)).to(value);
-                    binder.requestStaticInjection(StoreConstants.class);
-                }*/
             }
         });
     }

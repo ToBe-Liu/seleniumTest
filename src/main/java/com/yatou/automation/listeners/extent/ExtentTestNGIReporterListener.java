@@ -1,4 +1,4 @@
-package com.yatou.automation.extent;
+package com.yatou.automation.listeners.extent;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -12,7 +12,12 @@ import org.testng.xml.XmlSuite;
 
 import java.io.File;
 import java.util.*;
-
+/**
+ * ExtentReports监听器
+ *
+ * @author LiuXingHai
+ * @date 2017-08-16
+ */
 public class ExtentTestNGIReporterListener implements IReporter {
     //生成的路径以及文件名
     private static final String OUTPUT_FOLDER = "test-output/";

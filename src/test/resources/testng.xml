@@ -3,19 +3,22 @@
 <suite name="product-gateway" parallel="false" thread-count="2">
 
     <test name="Test1" >
-        <parameter name="Browser" value="chrome" />
         <classes>
             <class name="com.yatou.automation.test.ChromeTest1"/>
         </classes>
     </test>
     <listeners>
-        <!-- reportng插件 -->
+        <!-- reportng报告监听器 -->
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
         <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-        <!-- 自己实现的extent监听器 -->
-       <!-- <listener class-name="com.yatou.automation.extent.ExtentTestNGIReporterListener" />-->
-        <!-- 三方插件实现的extent监听器 -->
-        <!--<listener class-name="com.vimalselvam.testng.listener.ExtentTestNgFormatter" />-->
+        <!-- 失败重跑监听器 -->
+       <!-- <listener class-name="com.yatou.automation.listeners.RetryListener" />-->
+        <!-- 失败截图监听器 -->
+        <listener class-name="com.yatou.automation.listeners.TestNGListener" />
+        <!-- 自己实现的extentrepots监听器 -->
+       <!-- <listener class-name="com.yatou.automation.listeners.extent.ExtentTestNGIReporterListener" />-->
+        <!-- 三方插件实现的extentrepots监听器 -->
+       <!-- <listener class-name="com.vimalselvam.testng.listener.ExtentTestNgFormatter" />-->
     </listeners>
 
 </suite> <!-- Suite -->

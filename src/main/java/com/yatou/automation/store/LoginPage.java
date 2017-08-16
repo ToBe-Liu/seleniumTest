@@ -4,9 +4,7 @@ import com.yatou.automation.common.BasePage;
 import com.yatou.automation.common.StoreConstants;
 import com.yatou.automation.utils.Logger;
 import com.yatou.automation.utils.WaitUtil;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
@@ -42,16 +40,16 @@ public class LoginPage extends BasePage{
         type(this.userName,userName);
         type(this.passWord,passWord);
         click(this.submit);
-        layer = WaitUtil.fluentWait(driver, (driver1) -> driver.findElement(By.className("layui-layer-content")));
-        if (layer != null){
-            Logger.log("登录失败：" + layer.getText());
-            Assert.assertNull(layer);
+        WebElement logout = WaitUtil.fluentWait(driver,5,"没有找到成功界面！",
+                (driver1) -> driver.findElement(By.id("logout")));
+        if(logout == null ){
+            layer = WaitUtil.fluentWait(driver,5,"没有登录失败提示！",
+                    (driver1) -> driver.findElement(By.className("layui-layer-content")));
+            Assert.assertNull(layer,"登录失败：" + layer.getText());
         }
+
         UserCenterPage userCenterPage = PageFactory.initElements(driver, UserCenterPage.class);
-        if (userCenterPage.logout == null) {
-            Logger.log("登录失败：未知原因");
-            Assert.assertNull(layer);
-        }
+        Logger.log("登录成功！");
         return userCenterPage;
     }
 }
