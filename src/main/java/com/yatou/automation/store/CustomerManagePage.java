@@ -5,17 +5,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 /**
- * 门店用户中心页面
+ * 门店用户管理页面
  *
  * @author LiuXingHai
- * @date 2017-08-15
+ * @date 2017-08-18
  */
-public class UserCenterPage extends  Menu{
+public class CustomerManagePage extends  Menu{
 
     @FindBy(id="logout")
     WebElement logout;//退出登录
 
-    public UserCenterPage(WebDriver driver){
+    public CustomerManagePage(WebDriver driver){
         super(driver);
     }
 

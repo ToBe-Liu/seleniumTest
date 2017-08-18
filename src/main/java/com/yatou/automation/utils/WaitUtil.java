@@ -54,7 +54,7 @@ public class WaitUtil {
         WebElement webElement = null;
         try {
             Future<WebElement> future = fixedThreadPool.submit(() -> {
-                Logger.log("开始查找线程...");
+                //Logger.log("开始查找线程...");
                 WebElement element1 = null;
                 WebElement element2 = null;
                 while (true){
@@ -65,11 +65,11 @@ public class WaitUtil {
                         element2 = isTrue2.apply(driver);
                     } catch (NoSuchElementException e) {}
                     if (element1 != null) {
-                        Logger.log("返回找到的元素.");
+                        //Logger.log("返回找到的元素.");
                         return element1;
                     }
                     if (element2 != null) {
-                        Logger.log("返回找到的元素.");
+                        //Logger.log("返回找到的元素.");
                         return element2;
                     }
                     Thread.sleep(500);//每隔500毫秒查找一遍，直到超时
@@ -81,7 +81,7 @@ public class WaitUtil {
             Logger.log(msg);
         }finally {
             fixedThreadPool.shutdown();
-            Logger.log("关闭查找线程.");
+            //Logger.log("关闭查找线程.");
         }
         return webElement;
     }

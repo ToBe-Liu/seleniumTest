@@ -11,7 +11,7 @@ import org.openqa.selenium.support.FindBy;
  * @author LiuXingHai
  * @date 2017-08-15
  */
-public class Menu extends BasePage{
+public abstract class Menu extends BasePage{
 
     @FindBy(linkText="个人中心")
     WebElement userCenter;

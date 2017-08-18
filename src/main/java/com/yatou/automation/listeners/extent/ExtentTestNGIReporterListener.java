@@ -121,11 +121,8 @@ public class ExtentTestNGIReporterListener implements IReporter {
         //设置点击效果：.node.level-1  ul{ display:none;} .node.level-1.active ul{display:block;}
         //设置系统信息样式：.card-panel.environment  th:first-child{ width:30%;}
         htmlReporter.config().setCSS(".node.level-1  ul{ display:none;} .node.level-1.active ul{display:block;}  .card-panel.environment  th:first-child{ width:30%;}");
-        htmlReporter.config().setCSS(" .preview { display: none; width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; }  .bg { width: 100%; height: 100%; background: #000; opacity: 0.5; }  .preview img { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }");
         // 移除按键监听事件
         htmlReporter.config().setJS("$(window).off(\"keydown\");");
-        htmlReporter.config().setJS("<script src=\"http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js\"></script>");
-        htmlReporter.config().setJS("$('.step-details img').on({click : function(){var src = $(this).attr('src');$('.preview img').attr('src', src);$('.preview').show();}});$('.preview').on({click : function(){$('.preview').hide();}})");
         //设置静态文件的DNS 如果cdn.rawgit.com访问不了，可以设置为：ResourceCDN.EXTENTREPORTS 或者ResourceCDN.GITHUB
         htmlReporter.config().setResourceCDN(ResourceCDN.EXTENTREPORTS);
         extent = new ExtentReports();

@@ -45,4 +45,10 @@ public class ChromeTest1 {
         loginPage.login(AccountConstants.ADVISER_USERNAME,AccountConstants.ADVISER_PASSWORD);
     }
 
+    @Test(description = "新增预约量尺测试")
+    public void testAddMeasure() {
+        LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
+        loginPage.login(AccountConstants.ADVISER_USERNAME,AccountConstants.ADVISER_PASSWORD);
+    }
+
 }

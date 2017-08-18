@@ -10,7 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 /**
- * 门店登录
+ * 门店登录页面
  *
  * @author LiuXingHai
  * @date 2017-08-14
@@ -46,7 +46,7 @@ public class LoginPage extends BasePage{
         if(isLogin == null ){
             Assert.assertNull(1,"登录失败：未知原因！");
         }
-        if(!"退出登录".equals(isLogin.getText()) ){
+        if(!"退出登录".equals(isLogin.getText().trim()) ){
             Assert.assertNull(1,"登录失败：" + isLogin.getText());
         }
 

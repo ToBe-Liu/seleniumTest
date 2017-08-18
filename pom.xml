@@ -74,7 +74,7 @@
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
-            <version>3.0.3</version>
+            <version>3.0.6-local</version>
         </dependency>
         <dependency>
             <groupId>com.vimalselvam</groupId>

@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
  * @author LiuXingHai
  * @date 2017-08-14
  */
-public class BasePage {
+public abstract class BasePage {
 
     public static WebDriver driver;
     public static String pageTitle;
