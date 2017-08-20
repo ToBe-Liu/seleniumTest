@@ -19,8 +19,8 @@ import org.testng.annotations.Test;
 /**
  * Created by Administrator on 2017/8/13.
  */
-public class ChromeTest1 {
-    private  WebDriver driver;
+public class ChromeTest2 {
+    private WebDriver driver;
 
     @BeforeClass
     public void setupClass() {
@@ -31,7 +31,7 @@ public class ChromeTest1 {
         //chromeOptions.addArguments("--disable-gpu");
         //chromeOptions.addArguments("--window-size=1920,1080");
         driver = new ChromeDriver(chromeOptions);
-        System.out.println("ChromeTest1:"+driver);
+        System.out.println("ChromeTest2:"+driver);
         TestNGListener.setDriver(driver);
         driver.manage().window().maximize();
 
@@ -41,11 +41,11 @@ public class ChromeTest1 {
     @AfterClass
     public void teardown() {
         if (driver != null) {
-           // driver.quit();
+            //driver.quit();
         }
     }
 
-    @Test(description = "登录测试")
+    @Test(description = "新增预约量尺测试")
     @Parameters({"username","password"})
     public void testLogin(String username, String password) throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         driver.get(StoreConstants.LOGINURL);
@@ -56,7 +56,6 @@ public class ChromeTest1 {
             System.out.println("ChromeTest1:"+loginPage);
             loginPage.login(username,password);
         }
-
 
     }
 

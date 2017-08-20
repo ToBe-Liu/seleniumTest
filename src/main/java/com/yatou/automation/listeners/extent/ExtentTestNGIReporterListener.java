@@ -165,15 +165,15 @@ public class ExtentTestNGIReporterListener implements IReporter {
                 Object[] parameters = result.getParameters();
                 String name="";
                 //如果有参数，则使用参数的toString组合代替报告中的name
-                for(Object param:parameters){
+                /*for(Object param:parameters){
                     name+=param.toString();
-                }
+                }*/
                 if(name.length()>0){
                     if(name.length()>50){
                         name= name.substring(0,49)+"...";
                     }
                 }else{
-                    name = result.getMethod().getMethodName();
+                    name = result.getMethod().getMethodName() + "(" + result.getMethod().getDescription() + ")";
                 }
                 if(extenttest==null){
                     test = extent.createTest(name);

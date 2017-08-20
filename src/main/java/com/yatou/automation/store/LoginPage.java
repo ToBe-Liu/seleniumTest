@@ -1,10 +1,11 @@
 package com.yatou.automation.store;
 
 import com.yatou.automation.common.BasePage;
-import com.yatou.automation.common.StoreConstants;
 import com.yatou.automation.utils.Logger;
 import com.yatou.automation.utils.WaitUtil;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
@@ -34,13 +35,18 @@ public class LoginPage extends BasePage{
         super(driver);
     }
 
-    public UserCenterPage login(String userName,String passWord){
-        driver.get(StoreConstants.LOGINURL);
-        Logger.log("打开门店首页！");
+    public UserCenterPage login(String userName,String passWord) throws InterruptedException {
+        WebDriver driver = threadDriver.get();
+        System.out.println("login"+driver);
+        WebElement userNo = WaitUtil.fluentWait(driver, 10, "10秒内没有找到门店首页！", (driver1) -> driver.findElement(By.name("userNo")));
+        if (userNo == null) {
+            Assert.assertNull(1,"登录失败：10秒内没有找到门店首页！");
+        }
+        Thread.sleep(3000l);
         type(this.userName,userName);
         type(this.passWord,passWord);
         click(this.submit);
-        WebElement isLogin = WaitUtil.concurrentFindWait(driver,5,"5秒内没有找到成功界面和错误提示！",
+        WebElement isLogin = WaitUtil.concurrentFindWait(driver,10,"10秒内没有找到成功界面和错误提示！",
                 (driver1) -> driver.findElement(By.id("logout")),
                 (driver2) -> driver.findElement(By.className("layui-layer-content")));
         if(isLogin == null ){
@@ -52,6 +58,7 @@ public class LoginPage extends BasePage{
 
         UserCenterPage userCenterPage = PageFactory.initElements(driver, UserCenterPage.class);
         Logger.log("登录成功！");
+
         return userCenterPage;
     }
 }

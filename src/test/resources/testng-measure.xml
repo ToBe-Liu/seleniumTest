@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="product-gateway" parallel="instances" thread-count="2">
-   <suite-files>
-        <suite-file path="testng-measure.xml"></suite-file>
-        <suite-file path="testng-measure1.xml"></suite-file>
-    </suite-files>
+<suite name="product-gateway" parallel="false" thread-count="2">
+    <test name="Test1" >
+        <parameter name="username" value="530800010002"></parameter>
+        <parameter name="password" value="22222222"></parameter>
+        <classes>
+            <class name="com.yatou.automation.test.ChromeTest2"/>
+        </classes>
+    </test>
     <listeners>
         <!-- reportng报告监听器 -->
         <listener class-name="org.uncommons.reportng.HTMLReporter" />

@@ -29,7 +29,18 @@ public class AccountConstants {
     @Inject
     @Named("store.adviser_password")
     public static String ADVISER_PASSWORD;
-
+    @Inject
+    @Named("store.manager_username")
+    public static String MANAGER_USERNAME;
+    @Inject
+    @Named("store.manager_password")
+    public static String MANAGER_PASSWORD;
+    @Inject
+    @Named("store.designer_username")
+    public static String DESIGNER_USERNAME;
+    @Inject
+    @Named("store.designer_password")
+    public static String DESIGNER_PASSWORD;
     private static final Logger logger = LoggerFactory.getLogger(AccountConstants.class);
 
     static {
@@ -61,4 +72,10 @@ public class AccountConstants {
             }
         });
     }
-}  
+
+    public static String getField(String field) throws NoSuchFieldException, IllegalAccessException {
+        return AccountConstants.class.getField(field).get(new AccountConstants()).toString();
+    }
+
+
+}

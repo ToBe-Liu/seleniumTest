@@ -11,16 +11,15 @@ import org.openqa.selenium.WebElement;
  * @date 2017-08-14
  */
 public abstract class BasePage {
-
-    public static WebDriver driver;
-    public static String pageTitle;
-    public static String pageUrl;
+    public  ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();
+    public  String pageTitle;
+    public  String pageUrl;
 
     /* 
      * 构造方法 
      */
-    public BasePage(WebDriver driver) {
-        BasePage.driver = driver;
+    public BasePage(WebDriver driver1) {
+        threadDriver.set(driver1);
     }
 
     /* 
@@ -92,7 +91,7 @@ public abstract class BasePage {
      * 获取页面的标题 
      */
     protected String getCurrentPageTitle() {
-
+        WebDriver driver = threadDriver.get();
         pageTitle = driver.getTitle();
         Logger.log("当前页的标题： " + pageTitle);
         return pageTitle;
@@ -102,7 +101,7 @@ public abstract class BasePage {
      * 获取页面的url 
      */
     protected String getCurrentPageUrl() {
-
+        WebDriver driver = threadDriver.get();
         pageUrl = driver.getCurrentUrl();
         Logger.log("当前页的url： " + pageUrl);
         return pageUrl;

@@ -54,6 +54,9 @@ public class WaitUtil {
         WebElement webElement = null;
         try {
             Future<WebElement> future = fixedThreadPool.submit(() -> {
+
+                System.out.println("当前查找线程："+Thread.currentThread().getName());
+                System.out.println("当前查找线程driver："+driver);
                 //Logger.log("开始查找线程...");
                 WebElement element1 = null;
                 WebElement element2 = null;
@@ -66,10 +69,12 @@ public class WaitUtil {
                     } catch (NoSuchElementException e) {}
                     if (element1 != null) {
                         //Logger.log("返回找到的元素.");
+                        System.out.println("返回找到的element1:"+element1.getText());
                         return element1;
                     }
                     if (element2 != null) {
                         //Logger.log("返回找到的元素.");
+                        System.out.println("返回找到的element2:"+element2.getText());
                         return element2;
                     }
                     Thread.sleep(500);//每隔500毫秒查找一遍，直到超时
@@ -80,9 +85,10 @@ public class WaitUtil {
             e.printStackTrace();
             Logger.log(msg);
         }finally {
-            fixedThreadPool.shutdown();
+            //fixedThreadPool.shutdown();
             //Logger.log("关闭查找线程.");
         }
+        System.out.println("返回找到的webElement:"+webElement.getText());
         return webElement;
     }
 }

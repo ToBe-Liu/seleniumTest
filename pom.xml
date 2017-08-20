@@ -88,10 +88,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.17</version>
+                <version>2.19</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/${xmlFileName}</suiteXmlFile>
+                        <!--<file>src/test/resources/testng.xml</file>-->
+                      <!-- <suiteXmlFile>src/test/resources/testng-measure1.xml</suiteXmlFile>-->
+                       <suiteXmlFile>src/test/resources/testng-measure.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <!-- <systemPropertyVariables>标签设置为false为了让log中的html在页面上正常显示,避免直接显示为html字符串 -->
                     <systemPropertyVariables>
@@ -101,6 +103,10 @@
                         <property>
                             <name>usedefaultlisteners</name>
                             <value>false</value>
+                        </property>
+                       <property>
+                            <name>suitethreadpoolsize</name>
+                            <value>1</value>
                         </property>
                     </properties>
                     <workingDirectory>target/</workingDirectory>

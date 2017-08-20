@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="product-gateway" parallel="instances" thread-count="2">
-   <suite-files>
-        <suite-file path="testng-measure.xml"></suite-file>
-        <suite-file path="testng-measure1.xml"></suite-file>
-    </suite-files>
+<suite name="product-gateway1" parallel="false" thread-count="2">
+    <test name="Test1" >
+        <parameter name="username" value="330100020256"></parameter>
+        <parameter name="password" value="00000256"></parameter>
+        <classes>
+            <class name="com.yatou.automation.test.ChromeTest1"/>
+        </classes>
+    </test>
     <listeners>
         <!-- reportng报告监听器 -->
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
@@ -18,4 +21,5 @@
         <!-- 三方插件实现的extentrepots监听器 -->
         <!-- <listener class-name="com.vimalselvam.testng.listener.ExtentTestNgFormatter" />-->
     </listeners>
+
 </suite> <!-- Suite -->
