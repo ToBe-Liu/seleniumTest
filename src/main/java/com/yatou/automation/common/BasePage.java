@@ -1,6 +1,7 @@
 package com.yatou.automation.common;
 
 import com.yatou.automation.utils.Logger;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -106,6 +107,31 @@ public abstract class BasePage {
         Logger.log("当前页的url： " + pageUrl);
         return pageUrl;
     }
+    /*
+     * 添加属性
+     */
+    protected void setAttribuate(WebElement element,String attrName,String attrValue){
+        WebDriver driver = threadDriver.get();
+        ((JavascriptExecutor)driver).executeScript("arguments[0].setAttribute(arguments[1],arguments[2])", element,attrName,attrValue);
+        Logger.log("添加属性：[" + attrName+"='"+attrValue+"']");
+    }
+    /*
+      * 移除属性
+      */
+    protected void removeAttribuate(WebElement element,String attrName,String attrValue){
+        WebDriver driver = threadDriver.get();
+        ((JavascriptExecutor)driver).executeScript("arguments[0].removeAttribute(arguments[1],arguments[2])", element,attrName,attrValue);
+        Logger.log("移除"+element.toString()+"属性：[" + attrName+"='"+attrValue+"']");
 
+    }
+    /*
+      * 设置html
+      */
+    protected void setHtml(WebElement element,String content){
+        WebDriver driver = threadDriver.get();
+        ((JavascriptExecutor)driver).executeScript("arguments[0].innerHTML=arguments[1]", element,content);
+        Logger.log("设置"+element.toString()+"html：[" + content+"]");
+
+    }
 
 }  

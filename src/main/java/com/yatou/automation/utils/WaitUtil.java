@@ -1,15 +1,23 @@
 package com.yatou.automation.utils;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
+import org.openqa.selenium.support.pagefactory.DefaultFieldDecorator;
+import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
+import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.testng.Assert;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-
 
 
 /**
@@ -32,9 +40,12 @@ public class WaitUtil {
         try {
             element = wait.until(isTrue);
         }catch (TimeoutException e) {
-            Logger.log(msg);
+            Logger.log(time+"秒内没有找到"+msg+e);
         } catch (NoSuchElementException e) {
-            Logger.log(msg);
+            Logger.log(time+"秒内没有找到"+msg+e);
+        }
+        if(element == null){
+            Assert.assertNull(1,time+"秒内没有找到"+msg);
         }
         return element;
     }
@@ -90,5 +101,19 @@ public class WaitUtil {
         }
         System.out.println("返回找到的webElement:"+webElement.getText());
         return webElement;
+    }
+
+    public static WebElement getWebDriver(WebDriver driver,Class pageClass,String fieldName){
+        Field field = null;
+        try {
+            field = pageClass.getField(fieldName);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        ElementLocatorFactory elementLocatorFactory = (ElementLocatorFactory) (new DefaultElementLocatorFactory
+                (driver));
+        FieldDecorator fieldDecorator = (FieldDecorator) (new DefaultFieldDecorator(elementLocatorFactory));
+        WebElement decorate = (WebElement)fieldDecorator.decorate(pageClass.getClassLoader(), field);
+        return decorate;
     }
 }
