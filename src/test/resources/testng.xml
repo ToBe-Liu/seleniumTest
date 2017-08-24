@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="product-gateway" parallel="false" thread-count="2">
-    <test name="AdviserTest" >
+   <!-- <test name="AdviserTest" >
         <parameter name="username" value="ADVISER_USERNAME"></parameter>
         <parameter name="password" value="ADVISER_PASSWORD"></parameter>
         <groups>
@@ -11,6 +11,32 @@
         </groups>
         <classes>
             <class name="com.yatou.automation.test.CustomerManagePageTest"/>
+            <class name="com.yatou.automation.test.LoginPageTest"/>
+        </classes>
+
+    </test>-->
+    <test name="DesignerTest" >
+        <parameter name="username" value="DESIGNER_USERNAME"></parameter>
+        <parameter name="password" value="DESIGNER_PASSWORD"></parameter>
+        <groups>
+            <dependencies>
+                <group name="measureRegister" depends-on="login" />
+                <group name="contractRegister" depends-on="login" />
+                <group name="communicationRegister" depends-on="login" />
+            </dependencies>
+        </groups>
+        <classes>
+            <!--<class name="com.yatou.automation.test.MeasureRegisterPageTest">-->
+           <!-- <class name="com.yatou.automation.test.CommunicationRegisterPageTest">
+                <methods>
+                    <include name="testAddCommunicationRegister"></include>
+                </methods>
+            </class>-->
+            <class name="com.yatou.automation.test.ContractRegisterPageTest">
+                <methods>
+                    <include name="testAddContractRegister"></include>
+                </methods>
+            </class>
             <class name="com.yatou.automation.test.LoginPageTest"/>
         </classes>
 

@@ -1,10 +1,9 @@
 package com.yatou.automation.store;
 
 import com.yatou.automation.common.BasePage;
+import com.yatou.automation.common.ReturnMessageConstants;
 import com.yatou.automation.common.StoreConstants;
 import com.yatou.automation.utils.Logger;
-import com.yatou.automation.utils.WaitUtil;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -34,26 +33,29 @@ public class LoginPage extends BasePage{
     public LoginPage (WebDriver driver){
         super(driver);
     }
-
-    public WebDriver login(String userName,String passWord) throws InterruptedException {
+    /**
+     * 登录
+     *
+     * @author LiuXingHai
+     */
+    public void login(String userName,String passWord){
         WebDriver driver = threadDriver.get();
         System.out.println("login"+driver);
+
         driver.get(StoreConstants.LOGINURL);
-        type(this.userName,userName);
-        type(this.passWord,passWord);
-        click(this.submit);
-        WebElement isLogin = WaitUtil.concurrentFindWait(driver,10,"10秒内没有找到成功界面和错误提示！",
-                (driver1) -> driver.findElement(By.id("logout")),
-                (driver2) -> driver.findElement(By.className("layui-layer-content")));
+        fluentFindAndType(findElement(LoginPage.class, "userName"),userName,"用户名");
+        fluentFindAndType(findElement(LoginPage.class, "passWord"),passWord,"密码");
+        fluentFindAndClick(findElement(LoginPage.class, "submit"),"登录");
+
+        WebElement isLogin = concurrentFind("成功界面和错误提示！",
+                findElement(Menu.class, "logout"),
+                findElement(LoginPage.class, "layer"));
         if(isLogin == null ){
-            Assert.assertNull(1,"登录失败：未知原因！");
+            Assert.assertNull(1,"登录失败！");
         }
-        if(!"退出登录".equals(isLogin.getText().trim()) ){
+        if(!ReturnMessageConstants.LOGOUT.equals(isLogin.getText().trim()) ){
             Assert.assertNull(1,"登录失败：" + isLogin.getText());
         }
-
         Logger.log("登录成功！");
-
-        return driver;
     }
 }

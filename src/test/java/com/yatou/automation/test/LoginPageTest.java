@@ -48,7 +48,6 @@ public class LoginPageTest {
     public void testLogin(String username, String password) throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
         loginPage.login(AccountConstants.getField(username),AccountConstants.getField(password));
-
     }
 
     /*@Test(description = "新增预约量尺测试")

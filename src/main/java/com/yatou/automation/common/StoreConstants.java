@@ -26,6 +26,23 @@ public class StoreConstants {
     @Inject
     @Named("store.loginURL")
     public static String LOGINURL;
+    @Inject
+    @Named("store.space_type")
+    public static String SPACE_TYPE;
+    @Inject
+    @Named("store.parent_space_type")
+    public static String PARENT_SPACE_TYPE;
+    @Inject
+    @Named("store.measure_file")
+    public static String MEASURE_FILE;
+    @Inject
+    @Named("store.plan_file")
+    public static String PLAN_FILE;
+    @Inject
+    @Named("store.effect_file")
+    public static String EFFECT_FILE;
+
+
     private static final Logger logger = LoggerFactory.getLogger(StoreConstants.class);
 
     static {

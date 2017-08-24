@@ -1,7 +1,7 @@
 package com.yatou.automation.store;
 
-import com.yatou.automation.utils.WaitUtil;
-import org.openqa.selenium.By;
+import com.yatou.automation.common.AccountConstants;
+import com.yatou.automation.utils.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,8 +14,6 @@ import org.openqa.selenium.support.FindBy;
  */
 public class CustomerManagePage extends  Menu{
 
-    @FindBy(id="logout")
-    WebElement logout;//退出登录
     @FindBy(xpath="//td/a[contains(@href,'/customer/detail/')]")
     WebElement customerNo;//客户号
     @FindBy(linkText="新增预约量尺")
@@ -28,6 +26,8 @@ public class CustomerManagePage extends  Menu{
     WebElement getPosition;//获取定位
     @FindBy(xpath="//div[contains(@id,'myModal') and contains(@style,'display: block;')]")
     WebElement layer;//获取定位弹出层
+    @FindBy(xpath="//div[contains(@id,'myModal') and contains(@style,'display: none;')]")
+    WebElement layerDisplay;//获取定位弹出层消失
     @FindBy(id="BMapLib_PoiSearch")
     WebElement address;//详细地址
     @FindBy(id="BMapLib_sc_b0")
@@ -40,49 +40,35 @@ public class CustomerManagePage extends  Menu{
     WebElement submit;//确认添加
     @FindBy(xpath="//div[contains(@class,'space-list') and contains(@style,'display: ;')]/label[1]")
     WebElement measureSpace;//量尺空间
-    @FindBy(xpath="//div[contains(@class,'space-list') and contains(@style,'display: ;')]/label[1]")
+    @FindBy(name="receiveGid")
     WebElement designer;//设计师
-
     public CustomerManagePage(WebDriver driver){
         super(driver);
     }
-
+    /**
+     * 新增预约量尺
+     *
+     * @author LiuXingHai
+     */
     public void addMeasure() throws InterruptedException {
-        WebDriver driver = threadDriver.get();
-        click(this.customerNo);
 
-        WebElement addMeasure = WaitUtil.fluentWait(driver, 10, "新增预约量尺",
-                (driver1) -> driver.findElement(By.linkText("新增预约量尺")));
-        click(addMeasure);
+        fluentFindAndClick(findElement(CustomerManagePage.class, "customerNo"),"客户号");
 
-       WebElement getPosition = WaitUtil.fluentWait(driver, 10, "获取定位",
-                (driver1) -> driver.findElement(By.linkText("获取定位")));
-        click(getPosition);
+        fluentFindAndClick(findElement(CustomerManagePage.class, "addMeasure"),"新增预约量尺");
 
-        WebElement layer = WaitUtil.fluentWait(driver, 10, "获取定位弹出层",
-                (driver1) -> driver.findElement(By.xpath("//div[contains(@id,'myModal') and contains(@style,'display: " +
-                        "block;')]")));
-        WebElement buildingName = WaitUtil.fluentWait(driver, 10, "楼盘名",
-                (driver1) -> driver.findElement(By.id("search_address")));
-        WebElement buildingGPS = WaitUtil.fluentWait(driver, 10, "楼盘坐标",
-                (driver1) -> driver.findElement(By.id("longLatitude")));
-        setHtml(buildingName,"自动测试");
-        setHtml(buildingGPS,"120.318571,30.157489");
+        fluentFindAndClick(findElement(CustomerManagePage.class, "getPosition"),"获取定位");
+        fluentFind(findElement(CustomerManagePage.class, "layer"),"获取定位弹出层");
 
-        WebElement save = WaitUtil.fluentWait(driver, 10, "保存",
-                (driver1) -> driver.findElement(By.id("save")));
-        click(save);
+        fluentFindAndSetHtml(findElement(CustomerManagePage.class, "buildingName"),"自动测试","楼盘名");
+        fluentFindAndSetHtml(findElement(CustomerManagePage.class, "buildingGPS"),"120.318571,30.157489","楼盘坐标");
+        fluentFindAndClick(findElement(CustomerManagePage.class, "save"),"保存");
 
-        WaitUtil.fluentWait(driver, 10, "获取定位弹出层消失",
-                (driver1) -> driver.findElement(By.xpath("//div[contains(@id,'myModal') and contains(@style,'display: none;')]")));
+        fluentFind(findElement(CustomerManagePage.class, "layerDisplay"),"获取定位弹出层消失");
 
-        WebElement measureSpace = WaitUtil.fluentWait(driver, 10, "量尺空间",
-                (driver1) -> driver.findElement(By.xpath("//div[contains(@class,'space-list') and contains(@style,'display: ;')]/label[1]")));
-        click(measureSpace);
+        fluentFindAndClick(findElement(CustomerManagePage.class, "measureSpace"),"量尺空间");
+        fluentFindAndSelectByValue(findElement(CustomerManagePage.class, "designer"), AccountConstants.DESIGNER_USERNAME,"设计师");
+        fluentFindAndClick(findElement(CustomerManagePage.class, "submit"),"确认添加");
 
-        WebElement submit = WaitUtil.fluentWait(driver, 10, "确认添加",
-                (driver1) -> driver.findElement(By.xpath("//button[@type='submit']")));
-        click(submit);
-
+        Logger.log("新增预约量尺成功！");
     }
 }

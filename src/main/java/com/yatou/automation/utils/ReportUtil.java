@@ -22,7 +22,7 @@ public class ReportUtil {
 	}
 
 	public static void setReportName(String reportName) {
-		if(StringUtil.isNotEmpty(reportName)){
+		if(StringUtil.isBlank(reportName)){
 			ReportUtil.reportName = reportName;
 		}
 	}

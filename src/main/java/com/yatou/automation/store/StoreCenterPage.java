@@ -27,9 +27,9 @@ public class StoreCenterPage extends  Menu{
     }
 
     public boolean login(String userName,String passWord){
-        type(this.userName,userName);
-        type(this.passWord,passWord);
-        click(this.submit);
+        type(this.userName,userName,"");
+        type(this.passWord,passWord,"");
+        click(this.submit,"");
         return  false;
     }
 }

@@ -5,9 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.slf4j.LoggerFactory;
 
 /**
- * 门店左侧菜单
+ * 门店左侧菜单（外加一些页面通用的元素）
  *
  * @author LiuXingHai
  * @date 2017-08-15
@@ -24,7 +25,7 @@ public class Menu extends BasePage{
     WebElement customerManage;
 
     @FindBy(linkText="量尺登记")
-    WebElement mesureRegister;
+    WebElement measureRegister;
 
     @FindBy(linkText="沟通登记")
     WebElement communicationRegister;
@@ -68,7 +69,11 @@ public class Menu extends BasePage{
     @FindBy(linkText="门店统计")
     WebElement storeStatistics;
 
-
+    @FindBy(id="logout")
+    WebElement logout;//退出登录
+    @FindBy(id="smallbox1")
+    WebElement message;//操作返回信息
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(BasePage.class);
     /*
      * 构造方法
      */
@@ -88,21 +93,30 @@ public class Menu extends BasePage{
 
     public CustomerManagePage clickCustomerManage() {
         WebDriver driver = threadDriver.get();
-        System.out.println("clickCustomerManageDriver:"+driver);
-        click(customerManage);
+        logger.debug("clickCustomerManageDriver:"+driver);
+        click(customerManage,"客户管理");
         return PageFactory.initElements(driver, CustomerManagePage.class);
     }
 
-    public WebElement getMesureRegister() {
-        return mesureRegister;
+    public MeasureRegisterPage clickMeasureRegister() {
+        WebDriver driver = threadDriver.get();
+        logger.debug("clickMeasureRegisterDriver:"+driver);
+        click(measureRegister,"量尺登记");
+        return PageFactory.initElements(driver, MeasureRegisterPage.class);
     }
 
-    public WebElement getCommunicationRegister() {
-        return communicationRegister;
+    public CommunicationRegisterPage clickCommunicationRegister() {
+        WebDriver driver = threadDriver.get();
+        logger.debug("clickCommunicationRegisterDriver:"+driver);
+        click(communicationRegister,"沟通登记");
+        return PageFactory.initElements(driver, CommunicationRegisterPage.class);
     }
 
-    public WebElement getContractRegister() {
-        return contractRegister;
+    public ContractRegisterPage clickContractRegister() {
+        WebDriver driver = threadDriver.get();
+        logger.debug("clickContractRegisterDriver:"+driver);
+        click(contractRegister,"合同登记");
+        return PageFactory.initElements(driver, ContractRegisterPage.class);
     }
 
     public WebElement getContractManage() {

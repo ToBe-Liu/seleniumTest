@@ -1,10 +1,15 @@
 package com.yatou.automation.utils;
 
 /**
- * Wait的工具
+ * selenium的封装
  *
  * @author LiuXingHai
+ * @date 2017-08-22
  */
-public class WaitUtil {
+public class SeleniumUtil {
+
+
+
+
 
 }
