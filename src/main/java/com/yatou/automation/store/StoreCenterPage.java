@@ -1,11 +1,12 @@
 package com.yatou.automation.store;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 /**
  * 门店中心
+ * 本类的字段都是String类型的，不要使用{@link PageFactory#initElements(WebDriver, Class)}来实例化
  *
  * @author LiuXingHai
  * @date 2017-08-15
@@ -13,13 +14,13 @@ import org.openqa.selenium.support.FindBy;
 public class StoreCenterPage extends  Menu{
 
     @FindBy(name="userNo")
-    WebElement userName;//用户名
+    String userName;//用户名
 
     @FindBy (name="password")
-    WebElement passWord;//密码
+    String passWord;//密码
 
     @FindBy (xpath="//footer/button")
-    WebElement submit;//提交
+    String submit;//提交
 
 
     public StoreCenterPage(WebDriver driver){
@@ -27,9 +28,6 @@ public class StoreCenterPage extends  Menu{
     }
 
     public boolean login(String userName,String passWord){
-        type(this.userName,userName,"");
-        type(this.passWord,passWord,"");
-        click(this.submit,"");
-        return  false;
+        return false;
     }
 }

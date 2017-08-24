@@ -1,6 +1,6 @@
 package com.yatou.automation.test;
 
-import com.yatou.automation.common.AccountConstants;
+import com.yatou.automation.common.StoreAccountConstants;
 import com.yatou.automation.listeners.TestNGListener;
 import com.yatou.automation.store.LoginPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
@@ -47,13 +47,13 @@ public class LoginPageTest {
     @Parameters({"username","password"})
     public void testLogin(String username, String password) throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
-        loginPage.login(AccountConstants.getField(username),AccountConstants.getField(password));
+        loginPage.login(StoreAccountConstants.getField(username), StoreAccountConstants.getField(password));
     }
 
     /*@Test(description = "新增预约量尺测试")
     public void testAddMeasure() {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
-        loginPage.login(AccountConstants.ADVISER_USERNAME,AccountConstants.ADVISER_PASSWORD);
+        loginPage.login(StoreAccountConstants.ADVISER_USERNAME,StoreAccountConstants.ADVISER_PASSWORD);
     }*/
 
 }

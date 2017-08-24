@@ -130,10 +130,15 @@ public final class StringUtil {
 		return result;
 	}
 
+	/**
+	 * 将double转换成String（因为double在大于10位后直接调用toString方法会用科学计数法表示）
+	 *
+	 * @param bigDouble
+	 * @return 保留2位小数的String
+	 */
 	public static String double2String(Double bigDouble) {
 
 		if(bigDouble != 0.00){
-			System.out.println(bigDouble);
 			java.text.DecimalFormat df = new java.text.DecimalFormat("#########.00");
 			return df.format(bigDouble);
 		}else{
@@ -185,7 +190,6 @@ public final class StringUtil {
 	 * @return
 	 */
 	public static <T> String splice2String(List<T> source, String separator){
-
 		return splice2String(source,separator,null);
 	}
 	/**

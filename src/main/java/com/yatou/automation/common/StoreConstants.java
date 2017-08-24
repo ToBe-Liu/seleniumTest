@@ -23,6 +23,9 @@ import static com.google.inject.name.Names.named;
  * @date 2017-08-15
  */
 public class StoreConstants {
+
+    public static final String OPERATION_SUCCEED = "操作成功";//操作返回信息
+    public static final String LOGOUT = "退出登录";
     @Inject
     @Named("store.loginURL")
     public static String LOGINURL;

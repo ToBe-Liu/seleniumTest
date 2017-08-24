@@ -2,26 +2,27 @@ package com.yatou.automation.store;
 
 import com.yatou.automation.utils.Logger;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 /**
  * 门店沟通登记页面
+ * 本类的字段都是String类型的，不要使用{@link PageFactory#initElements(WebDriver, Class)}来实例化
  *
  * @author LiuXingHai
  * @date 2017-08-24
  */
 public class CommunicationRegisterPage extends  Menu{
     @FindBy(xpath="//td/a[contains(@href,'/taskseq/index/')]")
-    WebElement pipelineNo;//流水号
+    String pipelineNo;//流水号
     @FindBy(xpath="//a[contains(@href,'/taskseq/follow/')]")
-    WebElement communicationRegister;//沟通登记
+    String communicationRegister;//沟通登记
     @FindBy(xpath="//button[@type='submit']")
-    WebElement submit;//提交
+    String submit;//提交
     @FindBy(name="content")
-    WebElement content;//修改意见
+    String content;//修改意见
     @FindBy(xpath="//label[@class='checkbox-inline'][1]")
-    WebElement dealPoint;//待成交关键点
+    String dealPoint;//待成交关键点
 
     public CommunicationRegisterPage(WebDriver driver){
         super(driver);

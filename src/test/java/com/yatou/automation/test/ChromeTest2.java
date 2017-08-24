@@ -55,7 +55,7 @@ public class ChromeTest2 {
     /*@Test(description = "新增预约量尺测试")
     public void testAddMeasure() {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
-        loginPage.login(AccountConstants.ADVISER_USERNAME,AccountConstants.ADVISER_PASSWORD);
+        loginPage.login(StoreAccountConstants.ADVISER_USERNAME,StoreAccountConstants.ADVISER_PASSWORD);
     }*/
 
 }
