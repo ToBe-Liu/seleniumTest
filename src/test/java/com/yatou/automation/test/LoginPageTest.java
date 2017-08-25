@@ -7,7 +7,6 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Parameters;
@@ -46,7 +45,7 @@ public class LoginPageTest {
     @Test(description = "登录测试",groups = {"login"})
     @Parameters({"username","password"})
     public void testLogin(String username, String password) throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
+        LoginPage loginPage = new LoginPage(driver);
         loginPage.login(StoreAccountConstants.getField(username), StoreAccountConstants.getField(password));
     }
 

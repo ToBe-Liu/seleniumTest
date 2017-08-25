@@ -1,14 +1,14 @@
 package com.yatou.automation.store;
 
 import com.yatou.automation.common.BasePage;
+import com.yatou.automation.common.FindBy;
 import com.yatou.automation.common.StoreConstants;
 import com.yatou.automation.utils.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.openqa.selenium.support.PageFactory;
 
 /**
  * 门店登录页面
@@ -19,17 +19,21 @@ import org.openqa.selenium.support.PageFactory;
  */
 public class LoginPage extends BasePage{
 
-    @FindBy(name="userNo")
-    String userName;//用户名
+    @FindBy(name="userNo",
+            description = "用户名")
+    String userName = "userName";
 
-    @FindBy (name="password")
-    String passWord;//密码
+    @FindBy (name="password",
+            description = "密码")
+    String passWord = "passWord";
 
-    @FindBy (xpath="//footer/button")
-    String submit;//提交
+    @FindBy (xpath="//footer/button",
+            description = "登录")
+    String submit = "submit";
 
-    @FindBy (className="layui-layer-content")
-    String layer;//提示信息
+    @FindBy (className="layui-layer-content",
+            description = "提示信息")
+    String layer = "layer";
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LoginPage.class);
     public LoginPage (WebDriver driver){
@@ -42,12 +46,12 @@ public class LoginPage extends BasePage{
      */
     public void login(String userName,String passWord){
         WebDriver driver = threadDriver.get();
-        logger.debug("login"+driver);
+        logger.debug("loginDriver:"+driver);
 
         driver.get(StoreConstants.LOGINURL);
-        fluentFindAndType(findElement(LoginPage.class, this.userName),userName,"用户名");
-        fluentFindAndType(findElement(LoginPage.class, this.passWord),passWord,"密码");
-        fluentFindAndClick(findElement(LoginPage.class, submit),"登录");
+        fluentFindAndType(LoginPage.class, this.userName,userName);
+        fluentFindAndType(LoginPage.class, this.passWord,passWord);
+        fluentFindAndClick(LoginPage.class, submit);
 
         WebElement isLogin = concurrentFind("成功界面和错误提示！",
                 findElement(Menu.class, "logout"),

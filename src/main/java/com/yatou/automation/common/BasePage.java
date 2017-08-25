@@ -4,11 +4,8 @@ import com.yatou.automation.store.Menu;
 import com.yatou.automation.utils.Logger;
 import com.yatou.automation.utils.StringUtil;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Quotes;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 
@@ -29,9 +26,8 @@ import java.util.function.Function;
 public abstract class BasePage {
     public ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();//
     public Integer timeout = 10;//超时时间
-    public Integer timePolling = 500;//轮询时间
+    public Integer timePolling = 500;//轮询时间（默认单位：毫秒）
     public TimeUnit timeoutUnit = TimeUnit.SECONDS;//超时时间（默认单位：秒）
-    public TimeUnit timePollingUnit = TimeUnit.SECONDS;//轮询时间（默认单位；毫秒）
     ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(BasePage.class);
@@ -54,27 +50,24 @@ public abstract class BasePage {
         this.timeoutUnit = timeoutUnit;
     }
 
-    public void setTimePollingUnit(TimeUnit timePollingUnit) {
-        this.timePollingUnit = timePollingUnit;
-    }
 
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement
      *
-     * @param msg 元素描述
-     * @param isTrue 函数式查找一个WebElement
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      * @return 找到的WebElement
      */
-    protected WebElement fluentFind(Function<WebDriver, WebElement> isTrue, String msg) {
+    protected WebElement fluentFind(Class clazz, String webElementName) {
+
+        Function<WebDriver, WebElement> isTrue = findElement(clazz, webElementName);
+        String msg = findDescription(clazz, webElementName);
+
         WebDriver driver = threadDriver.get();
         WebElement element = null;
 
-        Wait<WebDriver> wait = new FluentWait(driver)
-                .withTimeout(timeout, timeoutUnit)
-                .pollingEvery(timePolling, timePollingUnit)
-                .ignoring(NoSuchElementException.class);
         try {
-            element = wait.until(isTrue);
+            element = concurrentFind(msg,isTrue);
         }catch (TimeoutException e) {
             Logger.log(timeout+"秒内没有找到"+msg+e);
         } catch (NoSuchElementException e) {
@@ -85,176 +78,158 @@ public abstract class BasePage {
         }
         return element;
     }
-    /**
-     * 对操作返回信息的封装
-     */
-    protected void fluentFindReturnMessage() {
-        WebElement returnMessage = fluentFind(findElement(Menu.class, "message"), "操作返回信息");
-        Logger.log("操作返回信息:["+returnMessage.getText()+"]");
-        if(!returnMessage.getText().trim().contains(StoreConstants.OPERATION_SUCCEED) ){
-            Assert.assertNull(1,"操作失败：" + returnMessage.getText());
-        }
-    }
+
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并点击
      *
-     * @param msg 元素描述
-     * @param isTrue 函数式查找一个WebElement
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      */
-    protected void fluentFindAndClick(Function<WebDriver, WebElement> isTrue,String msg) {
-        WebElement element = fluentFind(isTrue,msg);
+    protected void fluentFindAndClick(Class clazz, String webElementName) {
+        WebElement element = fluentFind(clazz,webElementName);
+        String msg = findDescription(clazz, webElementName);
         click(element,msg);
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并输入content
      *
-     * @param msg 元素描述
      * @param content 输入内容
-     * @param isTrue 函数式查找一个WebElement
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      */
-    protected void fluentFindAndType(Function<WebDriver, WebElement> isTrue,String content,String msg) {
-        WebElement element = fluentFind(isTrue,msg);
+    protected void fluentFindAndType(Class clazz, String webElementName,String content) {
+        WebElement element = fluentFind(clazz,webElementName);
+        String msg = findDescription(clazz, webElementName);
         type(element,content,msg);
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并输入指定{@link Keys}
      *
-     * @param msg 元素描述
      * @param keys 指定keys
-     * @param isTrue 函数式查找一个WebElement
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      */
-    protected void fluentFindAndTypeKeys(Function<WebDriver, WebElement> isTrue,Keys keys,String msg) {
-        WebElement element = fluentFind(isTrue,msg);
+    protected void fluentFindAndTypeKeys(Class clazz, String webElementName,Keys keys) {
+        WebElement element = fluentFind(clazz,webElementName);
+        String msg = findDescription(clazz, webElementName);
         typeKeys(element,keys,msg);
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并输入指定日期
      *（对日期输入框的封装）
      *
-     * @param msg 元素描述
      * @param date 指定日期
-     * @param isTrue 函数式查找一个WebElement
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      */
-    protected void fluentFindAndTypeDate(Function<WebDriver, WebElement> isTrue,String date,String msg) {
-
-        WebElement element = fluentFind(isTrue,msg);
+    protected void fluentFindAndTypeDate(Class clazz, String webElementName,String date) {
+        String msg = findDescription(clazz, webElementName);
+        WebElement element = fluentFind(clazz,webElementName);
         removeAttribute(element,"readonly",msg); //移除输入框的只读属性不然无法直接设置日期
         type(element,date,msg);
-        removeClass(element,"open",msg);//隐藏日期弹出层
+        fluentFindAndClick(Menu.class,"header");//点击头部，以便使日期弹出框消失
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并上传指定的文件
      *（对文件上传的封装）
      *
-     * @param msg 元素描述
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      * @param filePath 上传的文件的绝对路径
-     * @param isTrue 函数式查找一个WebElement
      */
-    protected void fluentFindAndTypeFile(Function<WebDriver, WebElement> isTrue,String filePath,String msg) {
-
-        WebElement element = fluentFind(isTrue,msg);
+    protected void fluentFindAndTypeFile(Class clazz, String webElementName,String filePath) {
+        String msg = findDescription(clazz, webElementName);
+        WebElement element = fluentFind(clazz,webElementName);
         removeAttribute(element,"style",msg); //移除输入框的只读属性不然无法直接设置件的绝对路径
         type(element,filePath,msg);
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并下拉选择指定值
      *
-     * @param msg 元素描述
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      * @param value 指定值
-     * @param isTrue 函数式查找一个WebElement
      */
-    protected void fluentFindAndSelectByValue(Function<WebDriver, WebElement> isTrue,String value,String msg) {
-        WebElement element = fluentFind(isTrue, msg);
+    protected void fluentFindAndSelectByValue(Class clazz, String webElementName,String value) {
+        String msg = findDescription(clazz, webElementName);
+        WebElement element = fluentFind(clazz, webElementName);
         selectByValue(element,value,msg);
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并直接设定指定值为选中状态
      * （适用于一些无法通过{@link #fluentFindAndSelectByValue}方法选值的select）
      *
-     * @param msg 元素描述
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      * @param value 指定值
-     * @param isTrue 函数式查找一个WebElement
      */
-    protected void fluentFindAndSetSelectedByValue(Function<WebDriver, WebElement> isTrue,String value,String msg) {
-        WebElement element = fluentFind(isTrue, msg);
+    protected void fluentFindAndSetSelectedByValue(Class clazz, String webElementName,String value) {
+        String msg = findDescription(clazz, webElementName);
+        WebElement element = fluentFind(clazz, webElementName);
         setSelectedByValue(element,value,msg);
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并设置Html
      *
-     * @param msg 元素描述
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      * @param content 设置的内容
-     * @param isTrue 函数式查找一个WebElement
      */
-    protected void fluentFindAndSetHtml(Function<WebDriver, WebElement> isTrue,String content,String msg) {
-        WebElement element = fluentFind(isTrue,msg);
+    protected void fluentFindAndSetHtml(Class clazz, String webElementName,String content) {
+        String msg = findDescription(clazz, webElementName);
+        WebElement element = fluentFind(clazz,webElementName);
         setHtml(element,content,msg);
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并设置属性
      *
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      * @param attrName 属性名
      * @param attrValue 属性值
-     * @param isTrue 函数式查找一个WebElement
-     * @param msg 元素描述
      */
-    protected void fluentFindAndSetAttribute(Function<WebDriver, WebElement> isTrue,String attrName,String attrValue,String msg) {
-        WebElement element = fluentFind(isTrue,msg);
+    protected void fluentFindAndSetAttribute(Class clazz, String webElementName,String attrName,String attrValue) {
+        String msg = findDescription(clazz, webElementName);
+        WebElement element = fluentFind(clazz,webElementName);
         setAttribute(element,attrName,attrValue,msg);
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并移除属性
      *
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
      * @param attrName 属性名(多个属性名通过逗号隔开)
-     * @param isTrue 函数式查找一个WebElement
-     * @param msg 元素描述
      */
-    protected void fluentFindAndRemoveAttribute(Function<WebDriver, WebElement> isTrue,String attrName,String msg) {
-        WebElement element = fluentFind(isTrue,msg);
+    protected void fluentFindAndRemoveAttribute(Class clazz, String webElementName,String attrName) {
+        String msg = findDescription(clazz, webElementName);
+        WebElement element = fluentFind(clazz,webElementName);
         List<String> attrNames = StringUtil.splitByComma(attrName, String.class);
         attrNames.forEach((at)->removeAttribute(element,at,msg));
     }
-
     /**
-     * 在{@link #timeout}内每隔{@link #timePolling}并发的查找多个页面元素，任意找到其中一个就返回找到的元素
+     * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并移除class
      *
-     * @param msg 元素描述
-     * @param isTrue 查找一个元素的Function
-     * @return 多个Function中最先找到的元素
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
+     * @param className class名(多个class名通过逗号隔开)
      */
-    protected WebElement concurrentFind(String msg,Function<WebDriver, WebElement>... isTrue) {
-        WebDriver driver = threadDriver.get();
-        WebElement webElement = null;
-        try {
-            Future<WebElement> future = fixedThreadPool.submit(() -> {
-
-                logger.debug("当前查找线程："+Thread.currentThread().getName());
-                logger.debug("当前查找线程driver："+driver);
-                WebElement element1 = null;
-                while (true){
-                    for (Function<WebDriver, WebElement> f : isTrue) {
-                        try {
-                            element1 = f.apply(driver);
-                        } catch (NoSuchElementException e) {}
-                        if (element1 != null) {
-                            logger.debug("返回找到的element1:"+element1.getText());
-                            return element1;
-                        }
-                    }
-                    Thread.sleep(500);//每隔500毫秒查找一遍，直到超时
-                }
-            });
-            webElement = future.get(timeout, timeoutUnit);
-        }catch (Exception e) {
-            e.printStackTrace();
-            Logger.log(msg);
-        }finally {
-            //fixedThreadPool.shutdown();
-            //Logger.log("关闭查找线程.");
-        }
-        return webElement;
+    protected void fluentFindAndRemoveClass(Class clazz, String webElementName,String className) {
+        String msg = findDescription(clazz, webElementName);
+        WebElement element = fluentFind(clazz,webElementName);
+        List<String> classNames = StringUtil.splitByComma(className, String.class);
+        classNames.forEach((at)->removeClass(element,at,msg));
     }
 
+    /**
+     * 对操作返回信息的封装
+     */
+    protected void fluentFindReturnMessage() {
+        WebElement returnMessage = fluentFind(Menu.class, "message");
+        Logger.log("操作返回信息:["+returnMessage.getText()+"]");
+        if(!returnMessage.getText().trim().contains(StoreConstants.OPERATION_SUCCEED) ){
+            Assert.assertNull(1,"操作失败：" + returnMessage.getText());
+        }
+    }
 
     /**
      * 通过反射获取指定类中指定字段名的一个查找函数
@@ -301,7 +276,68 @@ public abstract class BasePage {
         }
         return null;
     }
+    /**
+     * 通过反射获取指定类中指定字段名的描述信息
+     *
+     * @param clazz 需要反射的类
+     * @param webElementName 字段名
+     * @return 指定字段名的描述信息
+     */
+    protected String findDescription(Class clazz, String webElementName) {
+        WebDriver driver = threadDriver.get();
+        try {
+            Field field = clazz.getDeclaredField(webElementName);
+            field.setAccessible(true);
+            FindBy findBy = field.getAnnotation(FindBy.class);
+            String description = findBy.description();
+            return description;
+        } catch (NoSuchFieldException e) {
+            logger.debug(e.getMessage());
+            e.printStackTrace();
+            Assert.assertNull(1,"NoSuchFieldException：["+e.getMessage()+"].");
+        }
+        return "";
+    }
 
+    /**
+     * 在{@link #timeout}内每隔{@link #timePolling}并发的查找多个页面元素，任意找到其中一个就返回找到的元素
+     *
+     * @param msg 元素描述
+     * @param isTrue 查找一个元素的Function
+     * @return 多个Function中最先找到的元素
+     */
+    protected WebElement concurrentFind(String msg,Function<WebDriver, WebElement>... isTrue) {
+        WebDriver driver = threadDriver.get();
+        WebElement webElement = null;
+        try {
+            Future<WebElement> future = fixedThreadPool.submit(() -> {
+
+                logger.debug("当前查找线程："+Thread.currentThread().getName());
+                logger.debug("当前查找线程driver："+driver);
+                WebElement element1 = null;
+                while (true){
+                    for (Function<WebDriver, WebElement> f : isTrue) {
+                        try {
+                            element1 = f.apply(driver);
+                        } catch (NoSuchElementException e) {}
+                        if (element1 != null) {
+                            logger.debug("返回找到的element1:"+element1.getText());
+                            return element1;
+                        }
+                    }
+                    Thread.sleep(timePolling);//每隔500毫秒查找一遍，直到超时
+                }
+            });
+            webElement = future.get(timeout, timeoutUnit);
+        }catch (Exception e) {
+            e.printStackTrace();
+            Logger.log(msg);
+        }finally {
+            //fixedThreadPool.shutdown();
+            //Logger.log("关闭查找线程.");
+        }
+        return webElement;
+    }
 
     /**
      * 在指定的元素输入指定内容
@@ -322,7 +358,7 @@ public abstract class BasePage {
         }
         clean(element,msg);
         element.sendKeys(content);
-        Logger.log("填入: [" + msg + ":" + content + "].");
+        Logger.log("填入：[" + msg + ":" + content + "].");
     }
     /**
      * 在指定的元素输入指定{@link Keys}
@@ -370,6 +406,7 @@ public abstract class BasePage {
         }
 
     }
+
     /**
      * 下拉选择指定的值
      *
@@ -449,6 +486,19 @@ public abstract class BasePage {
         Logger.log("移除：[" + msg + "]的["+attrName+"]属性.");
     }
     /**
+     * 移除指定元素
+     *
+     * @param element 指定的元素
+     * @param msg 元素描述
+     */
+    protected void removeElement(WebElement element,String msg){
+        WebDriver driver = threadDriver.get();
+        String js = "arguments[0].parentNode.removeChild(arguments[0]);";
+        ((JavascriptExecutor) driver).executeScript(js, element);
+        Logger.log("移除：[" + msg + "]元素.");
+
+    }
+    /**
      * 指定元素添加class
      *
      * @param element 指定的元素
@@ -457,7 +507,7 @@ public abstract class BasePage {
      */
     protected void addClass(WebElement element,String className,String msg){
         WebDriver driver = threadDriver.get();
-        String js = "function hasClass(arguments[0],arguments[1]){var reg=new RegExp('(\\s|^)'+arguments[1]+'(\\s|$)');return arguments[0].className.match(reg);}if(!hasClass(arguments[0],arguments[1])){arguments[0].className+=' '+arguments[1];}";
+        String js = "arguments[0].className+=' '+arguments[1];";
         ((JavascriptExecutor)driver).executeScript(js, element,className);
         Logger.log("添加：[" + msg + "]的[class："+className+"]属性.");
     }
@@ -470,7 +520,7 @@ public abstract class BasePage {
      */
     protected void removeClass(WebElement element,String className,String msg){
         WebDriver driver = threadDriver.get();
-        String js = "function hasClass(arguments[0],arguments[1]){var reg=new RegExp('(\\s|^)'+arguments[1]+'(\\s|$)');return arguments[0].className.match(reg);}if(!hasClass(arguments[0],arguments[1])){arguments[0].className=arguments[0].className.replace(reg,' ');}";
+        String js = "arguments[0].className=arguments[0].className.replace(arguments[1],' ');";
         ((JavascriptExecutor)driver).executeScript(js, element,className);
         Logger.log("移除：[" + msg + "]的[class："+className+"]属性.");
     }

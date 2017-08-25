@@ -1,79 +1,84 @@
 package com.yatou.automation.store;
 
 import com.yatou.automation.common.BasePage;
+import com.yatou.automation.common.FindBy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.slf4j.LoggerFactory;
-import org.openqa.selenium.support.PageFactory;
 
 /**
  * 门店左侧菜单（外加一些页面通用的元素）
- ** 本类的字段都是{@link WebElement}类型的，可以使用{@link PageFactory#initElements(WebDriver, Class)}来实例化
  *
  * @author LiuXingHai
  * @date 2017-08-15
  */
 public class Menu extends BasePage{
 
-    @FindBy(linkText="个人中心")
-    WebElement userCenter;
+    @FindBy(linkText="个人中心",description = "个人中心")
+    String userCenter="userCenter";
 
-    @FindBy(linkText="门店中心")
-    WebElement storeCenter;
+    @FindBy(linkText="门店中心",description = "门店中心")
+    String storeCenter="storeCenter";
 
-    @FindBy(linkText="客户管理")
-    WebElement customerManage;
+    @FindBy(linkText="客户管理",description = "客户管理")
+    String customerManage="customerManage";
 
-    @FindBy(linkText="量尺登记")
-    WebElement measureRegister;
+    @FindBy(linkText="量尺登记",description = "量尺登记")
+    String measureRegister="measureRegister";
 
-    @FindBy(linkText="沟通登记")
-    WebElement communicationRegister;
+    @FindBy(linkText="沟通登记",description = "沟通登记")
+    String communicationRegister="communicationRegister";
 
-    @FindBy(linkText="合同登记")
-    WebElement contractRegister;
+    @FindBy(linkText="合同登记",description = "合同登记")
+    String contractRegister="contractRegister";
 
-    @FindBy(linkText="合同管理")
-    WebElement contractManage;
+    @FindBy(linkText="合同管理",description = "合同管理")
+    String contractManage="contractManage";
 
-    @FindBy(linkText="订单查询")
-    WebElement orderQuery;
+    @FindBy(linkText="订单查询",description = "订单查询")
+    String orderQuery="orderQuery";
 
-    @FindBy(linkText="补单查询")
-    WebElement orderResupplyQuery;
+    @FindBy(linkText="补单查询",description = "补单查询")
+    String orderResupplyQuery="orderResupplyQuery";
 
-    @FindBy(linkText="员工管理")
-    WebElement employeeManage;
+    @FindBy(linkText="员工管理",description = "员工管理")
+    String employeeManage="employeeManage";
 
-    @FindBy(linkText="流水查询")
-    WebElement pipelineQuery;
+    @FindBy(linkText="流水查询",description = "流水查询")
+    String pipelineQuery="pipelineQuery";
 
-    @FindBy(linkText="查房登记")
-    WebElement wardRoundRegister;
+    @FindBy(linkText="查房登记",description = "查房登记")
+    String wardRoundRegister="wardRoundRegister";
 
-    @FindBy(linkText="安装登记")
-    WebElement installRegister;
+    @FindBy(linkText="安装登记",description = "安装登记")
+    String installRegister="installRegister";
 
-    @FindBy(linkText="系统配置")
-    WebElement systemConfigure;
+    @FindBy(linkText="系统配置",description = "系统配置")
+    String systemConfigure="systemConfigure";
 
-    @FindBy(linkText="补单确认")
-    WebElement orderResupplyConfirm;
+    @FindBy(linkText="补单确认",description = "补单确认")
+    String orderResupplyConfirm="orderResupplyConfirm";
 
-    @FindBy(linkText="数据统计")
-    WebElement dataStatistics;
+    @FindBy(linkText="数据统计",description = "数据统计")
+    String dataStatistics="dataStatistics";
 
-    @FindBy(linkText="收货安装")
-    WebElement deliveryInstall;
+    @FindBy(linkText="收货安装",description = "收货安装")
+    String deliveryInstall="deliveryInstall";
 
-    @FindBy(linkText="门店统计")
-    WebElement storeStatistics;
+    @FindBy(linkText="门店统计",description = "门店统计")
+    String storeStatistics="storeStatistics";
 
-    @FindBy(id="logout")
-    WebElement logout;//退出登录
-    @FindBy(id="smallbox1")
-    WebElement message;//操作返回信息
+    @FindBy(id="logout",description = "退出登录")
+    String logout;//
+
+    @FindBy(id="smallbox1",description = "操作返回信息")
+    String message;//
+
+    @FindBy(xpath="//div[contains(@class,'flatpickr-calendar')]", description = "日期弹出层")
+    String dateLayer="dateLayer";
+
+    @FindBy(id="header", description = "头部")
+    String header="header";
+
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Menu.class);
     /*
      * 构造方法
@@ -95,76 +100,30 @@ public class Menu extends BasePage{
     public CustomerManagePage clickCustomerManage() {
         WebDriver driver = threadDriver.get();
         logger.debug("clickCustomerManageDriver:"+driver);
-        click(customerManage,"客户管理");
+        fluentFindAndClick(Menu.class,customerManage);
         return new CustomerManagePage(driver);
     }
 
     public MeasureRegisterPage clickMeasureRegister() {
         WebDriver driver = threadDriver.get();
         logger.debug("clickMeasureRegisterDriver:"+driver);
-        click(measureRegister,"量尺登记");
+        fluentFindAndClick(Menu.class,measureRegister);
         return new MeasureRegisterPage(driver);
     }
 
     public CommunicationRegisterPage clickCommunicationRegister() {
         WebDriver driver = threadDriver.get();
         logger.debug("clickCommunicationRegisterDriver:"+driver);
-        click(communicationRegister,"沟通登记");
+        fluentFindAndClick(Menu.class,communicationRegister);
         return new CommunicationRegisterPage(driver);
     }
 
     public ContractRegisterPage clickContractRegister() {
         WebDriver driver = threadDriver.get();
         logger.debug("clickContractRegisterDriver:"+driver);
-        click(contractRegister,"合同登记");
+        fluentFindAndClick(Menu.class,contractRegister);
         return new ContractRegisterPage(driver);
     }
 
-    public WebElement getContractManage() {
-        return contractManage;
-    }
 
-    public WebElement getOrderQuery() {
-        return orderQuery;
-    }
-
-    public WebElement getOrderResupplyQuery() {
-        return orderResupplyQuery;
-    }
-
-    public WebElement getEmployeeManage() {
-        return employeeManage;
-    }
-
-    public WebElement getPipelineQuery() {
-        return pipelineQuery;
-    }
-
-    public WebElement getWardRoundRegister() {
-        return wardRoundRegister;
-    }
-
-    public WebElement getInstallRegister() {
-        return installRegister;
-    }
-
-    public WebElement getSystemConfigure() {
-        return systemConfigure;
-    }
-
-    public WebElement getOrderResupplyConfirm() {
-        return orderResupplyConfirm;
-    }
-
-    public WebElement getDataStatistics() {
-        return dataStatistics;
-    }
-
-    public WebElement getDeliveryInstall() {
-        return deliveryInstall;
-    }
-
-    public WebElement getStoreStatistics() {
-        return storeStatistics;
-    }
 }

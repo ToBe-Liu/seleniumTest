@@ -1,8 +1,8 @@
 package com.yatou.automation.store;
 
+import com.yatou.automation.common.FindBy;
 import com.yatou.automation.utils.Logger;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 /**
@@ -13,16 +13,20 @@ import org.openqa.selenium.support.PageFactory;
  * @date 2017-08-24
  */
 public class CommunicationRegisterPage extends  Menu{
-    @FindBy(xpath="//td/a[contains(@href,'/taskseq/index/')]")
-    String pipelineNo;//流水号
-    @FindBy(xpath="//a[contains(@href,'/taskseq/follow/')]")
-    String communicationRegister;//沟通登记
-    @FindBy(xpath="//button[@type='submit']")
-    String submit;//提交
-    @FindBy(name="content")
-    String content;//修改意见
-    @FindBy(xpath="//label[@class='checkbox-inline'][1]")
-    String dealPoint;//待成交关键点
+    @FindBy(xpath="//td/a[contains(@href,'/taskseq/index/')]",description = "流水号")
+    String pipelineNo="pipelineNo";//
+
+    @FindBy(xpath="//a[contains(@href,'/taskseq/follow/')]",description = "沟通登记")
+    String communicationRegister="communicationRegister";//
+
+    @FindBy(xpath="//button[@type='submit']",description = "提交")
+    String submit="submit";//
+
+    @FindBy(name="content",description = "修改意见")
+    String content="content";//
+
+    @FindBy(xpath="//label[@class='checkbox-inline'][1]",description = "待成交关键点")
+    String dealPoint="dealPoint";//
 
     public CommunicationRegisterPage(WebDriver driver){
         super(driver);
@@ -34,14 +38,15 @@ public class CommunicationRegisterPage extends  Menu{
      * @author LiuXingHai
      */
     public void addCommunicationRegister() throws InterruptedException {
-        fluentFindAndClick(findElement(CommunicationRegisterPage.class, "pipelineNo"),"流水号");
-        fluentFindAndClick(findElement(CommunicationRegisterPage.class, "communicationRegister"),"沟通登记");
+        fluentFindAndClick(CommunicationRegisterPage.class, pipelineNo);
 
-        fluentFindAndType(findElement(CommunicationRegisterPage.class, "content"),"自动测试","修改意见");
+        fluentFindAndClick(CommunicationRegisterPage.class, communicationRegister);
 
-        fluentFindAndClick(findElement(CommunicationRegisterPage.class, "dealPoint"),"待成交关键点");
+        fluentFindAndType(CommunicationRegisterPage.class, content,"自动测试");
 
-        fluentFindAndClick(findElement(CommunicationRegisterPage.class, "submit"),"提交");
+        fluentFindAndClick(CommunicationRegisterPage.class, dealPoint);
+
+        fluentFindAndClick(CommunicationRegisterPage.class, submit);
 
         fluentFindReturnMessage();
 

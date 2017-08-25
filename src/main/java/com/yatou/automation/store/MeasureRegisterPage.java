@@ -1,9 +1,9 @@
 package com.yatou.automation.store;
 
+import com.yatou.automation.common.FindBy;
 import com.yatou.automation.common.StoreConstants;
 import com.yatou.automation.utils.Logger;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 /**
@@ -15,32 +15,44 @@ import org.openqa.selenium.support.PageFactory;
  */
 public class MeasureRegisterPage extends  Menu{
 
-    @FindBy(xpath="//td/a[contains(@href,'/taskseq/index/')]")
-    String pipelineNo = "pipelineNo";//流水号
-    @FindBy(xpath="//a[contains(@href,'/measure/create/')]")
-    String measureRegister;//量尺登记
-    @FindBy(name="planDate")
-    String planDate;//计划入住时间
-    @FindBy(xpath="//label[@class='checkbox-inline'][1]")
-    String furniture;//预购家具
-    @FindBy(xpath="//button[@type='submit']")
-    String submit;//确认添加
-    @FindBy(linkText="上传量尺文件")
-    String uploadMeasureFiles;//上传量尺文件
-    @FindBy(xpath="//label[@class='radio radio-inline']/span[text()='量尺文件']")
-    String measureFile;//文件类型:量尺文件
-    @FindBy(id="spaceType")
-    String spaceType;//子类空间类型
-    @FindBy(id="parentSpaceType")
-    String parentSpaceType;//父类空间类型
-    @FindBy(name="price")
-    String price;//单空间价格
-    @FindBy(xpath="//label[@id='label-upload-file' and text()='上传成功 ']")//注意上传成功后面有一个空格
-    String uploadSucceed;//文件上传成功
-    @FindBy(id="dwy_file_upload")
-    String uploadInput;//文件上传输入框
-    @FindBy(linkText="上传方案")
-    String uploadPlan;//上传方案
+    @FindBy(xpath="//td/a[contains(@href,'/taskseq/index/')]",description = "流水号")
+    String pipelineNo="pipelineNo";//
+
+    @FindBy(xpath="//a[contains(@href,'/measure/create/')]",description = "量尺登记")
+    String measureRegister="measureRegister";//
+
+    @FindBy(name="planDate",description = "计划入住时间")
+    String planDate="planDate";//
+
+    @FindBy(xpath="//label[@class='checkbox-inline'][1]",description = "预购家具")
+    String furniture="furniture";//
+
+    @FindBy(xpath="//button[@type='submit']",description = "确认添加")
+    String submit="submit";//
+
+    @FindBy(linkText="上传量尺文件",description = "上传量尺文件")
+    String uploadMeasureFiles="uploadMeasureFiles";//
+
+    @FindBy(id="spaceType",description = "子类空间类型")
+    String spaceType="spaceType";//
+
+    @FindBy(id="parentSpaceType",description = "父类空间类型")
+    String parentSpaceType="parentSpaceType";//
+
+    @FindBy(name="price",description = "单空间价格")
+    String price="price";//
+
+    @FindBy(xpath="//label[@id='label-upload-file' and text()='上传成功 ']",description = "文件上传成功")
+    String uploadSucceed="uploadSucceed";//注意上传成功后面有一个空格
+
+    @FindBy(id="dwy_file_upload",description = "文件上传输入框")
+    String uploadInput="uploadInput";//
+
+    @FindBy(linkText="上传方案",description = "上传方案")
+    String uploadPlan="uploadPlan";//
+
+    @FindBy(xpath="//label[@class='radio radio-inline']/span[text()='效果图']",description = "效果图")
+    String effectFile="effectFile";//
 
     public MeasureRegisterPage(WebDriver driver){
         super(driver);
@@ -52,15 +64,15 @@ public class MeasureRegisterPage extends  Menu{
      */
     public void measureRegister() throws InterruptedException {
 
-        fluentFindAndClick(findElement(MeasureRegisterPage.class, "pipelineNo"), "流水号");
+        fluentFindAndClick(MeasureRegisterPage.class, pipelineNo);
 
-        fluentFindAndClick(findElement(MeasureRegisterPage.class, "measureRegister"),"量尺登记");
+        fluentFindAndClick(MeasureRegisterPage.class, measureRegister);
 
-        fluentFindAndTypeDate(findElement(MeasureRegisterPage.class, "planDate"),"2099-08-22","计划入住时间");
+        fluentFindAndTypeDate(MeasureRegisterPage.class, planDate,"2099-08-22");
+        Thread.sleep(3000);
+        fluentFindAndClick(MeasureRegisterPage.class, furniture);
 
-        fluentFindAndClick(findElement(MeasureRegisterPage.class, "furniture"),"预购家具");
-
-        fluentFindAndClick(findElement(MeasureRegisterPage.class, "submit"),"确认添加");
+        fluentFindAndClick(MeasureRegisterPage.class, submit);
 
         fluentFindReturnMessage();
         Logger.log("量尺登记成功！");
@@ -72,10 +84,10 @@ public class MeasureRegisterPage extends  Menu{
      */
     public void uploadAllFile() throws InterruptedException {
 
-        fluentFindAndClick(findElement(MeasureRegisterPage.class, "uploadMeasureFiles"),"上传量尺文件");
+        fluentFindAndClick(MeasureRegisterPage.class, uploadMeasureFiles);
         uploadMeasureFile();
 
-        fluentFindAndClick(findElement(MeasureRegisterPage.class, "uploadPlan"),"上传方案");
+        fluentFindAndClick(MeasureRegisterPage.class, uploadPlan);
         uploadPlanFile();
         uploadEffectFile();
     }
@@ -106,6 +118,7 @@ public class MeasureRegisterPage extends  Menu{
      */
     public void uploadEffectFile() throws InterruptedException {
 
+        fluentFindAndClick(MeasureRegisterPage.class, effectFile);
         uploadFile(StoreConstants.EFFECT_FILE);
         Logger.log("上传效果图文件成功！");
     }
@@ -116,16 +129,16 @@ public class MeasureRegisterPage extends  Menu{
      */
     private void uploadFile(String filePath) throws InterruptedException {
 
-        fluentFindAndSelectByValue(findElement(MeasureRegisterPage.class, "parentSpaceType"), StoreConstants.PARENT_SPACE_TYPE,"父类空间类型");
-        fluentFindAndSelectByValue(findElement(MeasureRegisterPage.class, "spaceType"), StoreConstants.SPACE_TYPE,"子类空间类型");
+        fluentFindAndSelectByValue(MeasureRegisterPage.class, parentSpaceType, StoreConstants.PARENT_SPACE_TYPE);
+        fluentFindAndSelectByValue(MeasureRegisterPage.class, spaceType, StoreConstants.SPACE_TYPE);
 
-        fluentFindAndType(findElement(MeasureRegisterPage.class, "price"),"10000","单空间价格");
+        fluentFindAndType(MeasureRegisterPage.class, price,"10000");
 
-        fluentFindAndTypeFile(findElement(MeasureRegisterPage.class, "uploadInput"),filePath,"文件上传输入框");
+        fluentFindAndTypeFile(MeasureRegisterPage.class, uploadInput,filePath);
 
-        fluentFind(findElement(MeasureRegisterPage.class, "uploadSucceed"), "文件上传成功");
+        fluentFind(MeasureRegisterPage.class, uploadSucceed);
 
-        fluentFindAndClick(findElement(MeasureRegisterPage.class, "submit"),"确认添加");
+        fluentFindAndClick(MeasureRegisterPage.class, submit);
 
         fluentFindReturnMessage();
     }

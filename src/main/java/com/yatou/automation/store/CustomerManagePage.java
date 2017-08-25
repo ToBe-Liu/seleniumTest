@@ -1,9 +1,9 @@
 package com.yatou.automation.store;
 
+import com.yatou.automation.common.FindBy;
 import com.yatou.automation.common.StoreAccountConstants;
 import com.yatou.automation.utils.Logger;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 /**
@@ -15,34 +15,39 @@ import org.openqa.selenium.support.PageFactory;
  */
 public class CustomerManagePage extends  Menu{
 
-    @FindBy(xpath="//td/a[contains(@href,'/customer/detail/')]")
-    String customerNo;//客户号
-    @FindBy(linkText="新增预约量尺")
-    String addMeasure;//新增预约量尺
-    @FindBy(id="search_address")
-    String buildingName;//楼盘名
-    @FindBy(id="longLatitude")
-    String buildingGPS;//楼盘坐标
-    @FindBy(linkText="获取定位")
-    String getPosition;//获取定位
-    @FindBy(xpath="//div[contains(@id,'myModal') and contains(@style,'display: block;')]")
-    String layer;//获取定位弹出层
-    @FindBy(xpath="//div[contains(@id,'myModal') and contains(@style,'display: none;')]")
-    String layerDisplay;//获取定位弹出层消失
-    @FindBy(id="BMapLib_PoiSearch")
-    String address;//详细地址
-    @FindBy(id="BMapLib_sc_b0")
-    String search;//搜索
-    @FindBy(xpath="//div[contains(@id,'BMapLib_resultArea') and contains(@style,'display: block;')]")
-    String searchResult;//搜索结果
-    @FindBy(id="save")
-    String save;//保存
-    @FindBy(xpath="//button[@type='submit']")
-    String submit;//确认添加
-    @FindBy(xpath="//div[contains(@class,'space-list') and contains(@style,'display: ;')]/label[1]")
-    String measureSpace;//量尺空间
-    @FindBy(name="receiveGid")
-    String designer;//设计师
+    @FindBy(xpath="//td/a[contains(@href,'/customer/detail/')]",description = "客户号")
+    String customerNo="customerNo";//
+
+    @FindBy(linkText="新增预约量尺",description = "新增预约量尺")
+    String addMeasure="addMeasure";//
+
+    @FindBy(id="search_address",description = "楼盘名")
+    String buildingName="buildingName";//
+
+    @FindBy(id="longLatitude",description = "楼盘坐标")
+    String buildingGPS="buildingGPS";//
+
+    @FindBy(linkText="获取定位",description = "获取定位")
+    String getPosition="getPosition";//
+
+    @FindBy(xpath="//div[contains(@id,'myModal') and contains(@style,'display: block;')]",description = "获取定位弹出层")
+    String layer="layer";//
+
+    @FindBy(xpath="//div[contains(@id,'myModal') and contains(@style,'display: none;')]",description = "获取定位弹出层消失")
+    String layerDisplay="layerDisplay";//
+
+    @FindBy(id="save",description = "保存")
+    String save="save";//
+
+    @FindBy(xpath="//button[@type='submit']",description = "确认添加")
+    String submit="submit";//
+
+    @FindBy(xpath="//div[contains(@class,'space-list') and contains(@style,'display: ;')]/label[1]",description = "量尺空间")
+    String measureSpace="measureSpace";//
+
+    @FindBy(name="receiveGid",description = "设计师")
+    String designer="designer";//
+
     public CustomerManagePage(WebDriver driver){
         super(driver);
     }
@@ -53,22 +58,22 @@ public class CustomerManagePage extends  Menu{
      */
     public void addMeasure() throws InterruptedException {
 
-        fluentFindAndClick(findElement(CustomerManagePage.class, "customerNo"),"客户号");
+        fluentFindAndClick(CustomerManagePage.class, customerNo);
 
-        fluentFindAndClick(findElement(CustomerManagePage.class, "addMeasure"),"新增预约量尺");
+        fluentFindAndClick(CustomerManagePage.class, addMeasure);
 
-        fluentFindAndClick(findElement(CustomerManagePage.class, "getPosition"),"获取定位");
-        fluentFind(findElement(CustomerManagePage.class, "layer"),"获取定位弹出层");
+        fluentFindAndClick(CustomerManagePage.class, getPosition);
+        fluentFind(CustomerManagePage.class, layer);
 
-        fluentFindAndSetHtml(findElement(CustomerManagePage.class, "buildingName"),"自动测试","楼盘名");
-        fluentFindAndSetHtml(findElement(CustomerManagePage.class, "buildingGPS"),"120.318571,30.157489","楼盘坐标");
-        fluentFindAndClick(findElement(CustomerManagePage.class, "save"),"保存");
+        fluentFindAndSetHtml(CustomerManagePage.class, buildingName,"自动测试");
+        fluentFindAndSetHtml(CustomerManagePage.class, buildingGPS,"120.318571,30.157489");
+        fluentFindAndClick(CustomerManagePage.class, save);
 
-        fluentFind(findElement(CustomerManagePage.class, "layerDisplay"),"获取定位弹出层消失");
+        fluentFind(CustomerManagePage.class, layerDisplay);
 
-        fluentFindAndClick(findElement(CustomerManagePage.class, "measureSpace"),"量尺空间");
-        fluentFindAndSelectByValue(findElement(CustomerManagePage.class, "designer"), StoreAccountConstants.DESIGNER_USERNAME,"设计师");
-        fluentFindAndClick(findElement(CustomerManagePage.class, "submit"),"确认添加");
+        fluentFindAndClick(CustomerManagePage.class, measureSpace);
+        fluentFindAndSelectByValue(CustomerManagePage.class, designer, StoreAccountConstants.DESIGNER_USERNAME);
+        fluentFindAndClick(CustomerManagePage.class, submit);
 
         Logger.log("新增预约量尺成功！");
     }
