@@ -91,9 +91,9 @@
                 <version>2.19</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <file>src/test/resources/testng.xml</file>
+                       <!-- <file>src/test/resources/testng.xml</file>-->
                       <!-- <suiteXmlFile>src/test/resources/testng-measure1.xml</suiteXmlFile>-->
-                       <!--<suiteXmlFile>src/test/resources/testng-measure.xml</suiteXmlFile>-->
+                       <suiteXmlFile>src/test/resources/testng-measure.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <!-- <systemPropertyVariables>标签设置为false为了让log中的html在页面上正常显示,避免直接显示为html字符串 -->
                     <systemPropertyVariables>

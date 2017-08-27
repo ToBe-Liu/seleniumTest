@@ -56,11 +56,16 @@ public abstract class BasePage {
      *
      * @param clazz 定义元素的类
      * @param webElementName 元素名
+     * @param text 元素包含的text（可选，不需要请填null）
      * @return 找到的WebElement
      */
-    protected WebElement fluentFind(Class clazz, String webElementName) {
-
-        Function<WebDriver, WebElement> isTrue = findElement(clazz, webElementName);
+    protected WebElement fluentFind(Class clazz, String webElementName,String text) {
+        Function<WebDriver, WebElement> isTrue = null;
+        if (text!=null){
+            isTrue = findElementByText(clazz, webElementName,text);
+        } else {
+            isTrue = findElement(clazz, webElementName);
+        }
         String msg = findDescription(clazz, webElementName);
 
         WebDriver driver = threadDriver.get();
@@ -86,7 +91,18 @@ public abstract class BasePage {
      * @param webElementName 元素名
      */
     protected void fluentFindAndClick(Class clazz, String webElementName) {
-        WebElement element = fluentFind(clazz,webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
+        String msg = findDescription(clazz, webElementName);
+        click(element,msg);
+    }
+    /**
+     * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并点击
+     *
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
+     */
+    protected void fluentFindAndClickByText(Class clazz, String webElementName,String text) {
+        WebElement element = fluentFind(clazz,webElementName,text);
         String msg = findDescription(clazz, webElementName);
         click(element,msg);
     }
@@ -98,7 +114,7 @@ public abstract class BasePage {
      * @param webElementName 元素名
      */
     protected void fluentFindAndType(Class clazz, String webElementName,String content) {
-        WebElement element = fluentFind(clazz,webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
         String msg = findDescription(clazz, webElementName);
         type(element,content,msg);
     }
@@ -110,7 +126,7 @@ public abstract class BasePage {
      * @param webElementName 元素名
      */
     protected void fluentFindAndTypeKeys(Class clazz, String webElementName,Keys keys) {
-        WebElement element = fluentFind(clazz,webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
         String msg = findDescription(clazz, webElementName);
         typeKeys(element,keys,msg);
     }
@@ -124,7 +140,7 @@ public abstract class BasePage {
      */
     protected void fluentFindAndTypeDate(Class clazz, String webElementName,String date) {
         String msg = findDescription(clazz, webElementName);
-        WebElement element = fluentFind(clazz,webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
         removeAttribute(element,"readonly",msg); //移除输入框的只读属性不然无法直接设置日期
         type(element,date,msg);
         fluentFindAndClick(Menu.class,"header");//点击头部，以便使日期弹出框消失
@@ -139,7 +155,7 @@ public abstract class BasePage {
      */
     protected void fluentFindAndTypeFile(Class clazz, String webElementName,String filePath) {
         String msg = findDescription(clazz, webElementName);
-        WebElement element = fluentFind(clazz,webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
         removeAttribute(element,"style",msg); //移除输入框的只读属性不然无法直接设置件的绝对路径
         type(element,filePath,msg);
     }
@@ -152,7 +168,7 @@ public abstract class BasePage {
      */
     protected void fluentFindAndSelectByValue(Class clazz, String webElementName,String value) {
         String msg = findDescription(clazz, webElementName);
-        WebElement element = fluentFind(clazz, webElementName);
+        WebElement element = fluentFind(clazz, webElementName,null);
         selectByValue(element,value,msg);
     }
     /**
@@ -165,7 +181,7 @@ public abstract class BasePage {
      */
     protected void fluentFindAndSetSelectedByValue(Class clazz, String webElementName,String value) {
         String msg = findDescription(clazz, webElementName);
-        WebElement element = fluentFind(clazz, webElementName);
+        WebElement element = fluentFind(clazz, webElementName,null);
         setSelectedByValue(element,value,msg);
     }
     /**
@@ -177,7 +193,7 @@ public abstract class BasePage {
      */
     protected void fluentFindAndSetHtml(Class clazz, String webElementName,String content) {
         String msg = findDescription(clazz, webElementName);
-        WebElement element = fluentFind(clazz,webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
         setHtml(element,content,msg);
     }
     /**
@@ -190,7 +206,7 @@ public abstract class BasePage {
      */
     protected void fluentFindAndSetAttribute(Class clazz, String webElementName,String attrName,String attrValue) {
         String msg = findDescription(clazz, webElementName);
-        WebElement element = fluentFind(clazz,webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
         setAttribute(element,attrName,attrValue,msg);
     }
     /**
@@ -202,7 +218,7 @@ public abstract class BasePage {
      */
     protected void fluentFindAndRemoveAttribute(Class clazz, String webElementName,String attrName) {
         String msg = findDescription(clazz, webElementName);
-        WebElement element = fluentFind(clazz,webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
         List<String> attrNames = StringUtil.splitByComma(attrName, String.class);
         attrNames.forEach((at)->removeAttribute(element,at,msg));
     }
@@ -215,7 +231,7 @@ public abstract class BasePage {
      */
     protected void fluentFindAndRemoveClass(Class clazz, String webElementName,String className) {
         String msg = findDescription(clazz, webElementName);
-        WebElement element = fluentFind(clazz,webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
         List<String> classNames = StringUtil.splitByComma(className, String.class);
         classNames.forEach((at)->removeClass(element,at,msg));
     }
@@ -224,7 +240,7 @@ public abstract class BasePage {
      * 对操作返回信息的封装
      */
     protected void fluentFindReturnMessage() {
-        WebElement returnMessage = fluentFind(Menu.class, "message");
+        WebElement returnMessage = fluentFind(Menu.class, "message",null);
         Logger.log("操作返回信息:["+returnMessage.getText()+"]");
         if(!returnMessage.getText().trim().contains(StoreConstants.OPERATION_SUCCEED) ){
             Assert.assertNull(1,"操作失败：" + returnMessage.getText());
@@ -268,6 +284,52 @@ public abstract class BasePage {
             }
             if (!"".equals(findBy.tagName().trim())) {
                 return (driver1)->driver.findElement(By.tagName(findBy.tagName()));
+            }
+        } catch (NoSuchFieldException e) {
+            logger.debug(e.getMessage());
+            e.printStackTrace();
+            Assert.assertNull(1,"NoSuchFieldException：["+e.getMessage()+"].");
+        }
+        return null;
+    }
+    /**
+     * 通过反射获取指定类中指定字段名并包含指定text的一个查找函数
+     *
+     * @param clazz 需要反射的类
+     * @param webElementName 字段名
+     * @param text 元素包含的text（不支持模糊查找，请填写完整的text）
+     * @return 查找函数
+     */
+    protected Function<WebDriver, WebElement> findElementByText(Class clazz, String webElementName,String text) {
+        WebDriver driver = threadDriver.get();
+        try {
+            Field field = clazz.getDeclaredField(webElementName);
+            field.setAccessible(true);
+            FindBy findBy = field.getAnnotation(FindBy.class);
+            String xpath = findBy.xpath()+"[text()='"+text+"']";
+            if (!"".equals(findBy.id().trim())) {
+                Assert.assertNull(1,"findElementByText方法只支持xpath.");
+            }
+            if (!"".equals(findBy.name().trim())) {
+                Assert.assertNull(1,"findElementByText方法只支持xpath.");
+            }
+            if (!"".equals(findBy.className().trim())) {
+                Assert.assertNull(1,"findElementByText方法只支持xpath.");
+            }
+            if (!"".equals(findBy.css().trim())) {
+                Assert.assertNull(1,"findElementByText方法只支持xpath.");
+            }
+            if (!"".equals(findBy.xpath().trim())) {
+                return (driver1)->driver.findElement(By.xpath(xpath));
+            }
+            if (!"".equals(findBy.linkText().trim())) {
+                Assert.assertNull(1,"findElementByText方法只支持xpath.");
+            }
+            if (!"".equals(findBy.partialLinkText().trim())) {
+                Assert.assertNull(1,"findElementByText方法只支持xpath.");
+            }
+            if (!"".equals(findBy.tagName().trim())) {
+                Assert.assertNull(1,"findElementByText方法只支持xpath.");
             }
         } catch (NoSuchFieldException e) {
             logger.debug(e.getMessage());
@@ -348,10 +410,10 @@ public abstract class BasePage {
      */
     protected void type(WebElement element,String content,String msg){
         if(!element.isEnabled()){
-            Logger.log("当前元素；["+ msg+"]被禁！");
+            Assert.assertNull(1,"当前元素：["+msg+"]被禁，无法输入！");
         }
         if(!element.isDisplayed()){
-            Logger.log("当前元素：["+ msg+"]不可见！");
+            Assert.assertNull(1,"当前元素：["+msg+"]不可见，无法输入！");
         }
         if(isReadonly(element)){
             Assert.assertNull(1,"当前元素：["+msg+"]只读，无法输入！");
@@ -450,7 +512,7 @@ public abstract class BasePage {
                 Assert.assertNull(1,"当前元素：["+msg+"]只读，无法清除！");
             }
             if(!element.isDisplayed()){
-                Logger.log("当前元素：["+msg+"]不可见！");
+                Assert.assertNull(1,"当前元素：["+msg+"]不可见，无法清除！");
             }
             element.clear();
             Logger.log("清空：[" + msg + "].");

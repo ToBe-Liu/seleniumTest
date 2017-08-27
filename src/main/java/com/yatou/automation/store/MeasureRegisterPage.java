@@ -15,9 +15,6 @@ import org.openqa.selenium.support.PageFactory;
  */
 public class MeasureRegisterPage extends  Menu{
 
-    @FindBy(xpath="//td/a[contains(@href,'/taskseq/index/')]",description = "流水号")
-    String pipelineNo="pipelineNo";//
-
     @FindBy(xpath="//a[contains(@href,'/measure/create/')]",description = "量尺登记")
     String measureRegister="measureRegister";//
 
@@ -63,8 +60,6 @@ public class MeasureRegisterPage extends  Menu{
      * @author LiuXingHai
      */
     public void measureRegister() throws InterruptedException {
-
-        fluentFindAndClick(MeasureRegisterPage.class, pipelineNo);
 
         fluentFindAndClick(MeasureRegisterPage.class, measureRegister);
 
@@ -136,7 +131,7 @@ public class MeasureRegisterPage extends  Menu{
 
         fluentFindAndTypeFile(MeasureRegisterPage.class, uploadInput,filePath);
 
-        fluentFind(MeasureRegisterPage.class, uploadSucceed);
+        fluentFind(MeasureRegisterPage.class, uploadSucceed,null);
 
         fluentFindAndClick(MeasureRegisterPage.class, submit);
 

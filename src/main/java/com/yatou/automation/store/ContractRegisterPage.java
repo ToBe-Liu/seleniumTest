@@ -169,7 +169,7 @@ public class ContractRegisterPage extends  Menu{
 
         fluentFindAndTypeFile(ContractRegisterPage.class, uploadInput,StoreConstants.MEASURE_FILE);
 
-        fluentFind(ContractRegisterPage.class, uploadSucceed);
+        fluentFind(ContractRegisterPage.class, uploadSucceed,null);
 
         fluentFindAndClick(ContractRegisterPage.class, submit);
 

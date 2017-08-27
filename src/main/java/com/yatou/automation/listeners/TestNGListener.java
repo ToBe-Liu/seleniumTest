@@ -22,10 +22,10 @@ import java.io.IOException;
  */
 public class TestNGListener extends TestListenerAdapter {
 
-    private static WebDriver driver;
+    private static ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();//
 
     public static void setDriver(WebDriver driver) {
-        TestNGListener.driver = driver;
+        TestNGListener.threadDriver.set(driver);
     }
 
     @Override
@@ -36,10 +36,12 @@ public class TestNGListener extends TestListenerAdapter {
 
     @Override
     public void onTestFailure(ITestResult tr) {
+        WebDriver driver = threadDriver.get();
+        Long threadName = Thread.currentThread().getId();
         Logger.log("测试失败！");
         super.onTestFailure(tr);
         Reporter.setCurrentTestResult(tr);
-        File screenShotFile = new File(new File("").getAbsolutePath() + "/Screenshots/" + tr.getName()+"_"+ DateUtil.getCurrentTime() + ".jpg");
+        File screenShotFile = new File(new File("").getAbsolutePath() + "/Screenshots/" +threadName +"_"+tr.getName()+"_"+ DateUtil.getCurrentTime() + ".jpg");
         File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);//本地保存文件
         String screenshotAs = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);//测试报告显示base64
         Reporter.log("<img src='data:image/jpg;base64,"+screenshotAs+"' hight='100' width='100'/>");

@@ -20,7 +20,7 @@ public class ContractRegisterPageTest {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ContractRegisterPageTest.class);
     @BeforeClass
     public void setupClass() {
-        driver = LoginPageTest.driver;
+        driver = LoginPageTest.threadDriver.get();
         menu = PageFactory.initElements(driver, Menu.class);
     }
 

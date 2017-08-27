@@ -7,27 +7,27 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
- * 门店用户管理页面Test
+ * 门店流水查询页面Test
  *
  * @author LiuXingHai
- * @date 2017-08-21
+ * @date 2017-08-27
  */
 @Test(groups = {"customerManage"})
-public class CustomerManagePageTest {
+public class PipelineQueryPageTest {
     public static ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();//
     public static Menu menu ;
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(CustomerManagePageTest.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(PipelineQueryPageTest.class);
     @BeforeClass
     public void setupClass() {
         threadDriver = LoginPageTest.threadDriver;
         menu = new Menu(threadDriver.get());
     }
 
-    @Test(description = "新增预约量尺测试")
-    public void testAddMeasure() throws InterruptedException {
+    @Test(description = "流水查询测试",dataProvider = "pipelineNos",dataProviderClass = MeasureRegisterPageTest.class)
+    public void testPipelineQuery(String pipelineNo) throws InterruptedException {
         WebDriver driver = threadDriver.get();
-        logger.debug("新增预约量尺测试driver:"+driver);
-        menu.clickCustomerManage().addMeasure();
+        logger.debug("流水查询测试driver:"+driver);
+        menu.clickPipelineQuery().pipelineQuery(pipelineNo);
     }
 
 }

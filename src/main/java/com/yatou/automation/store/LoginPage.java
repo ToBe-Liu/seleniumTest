@@ -51,6 +51,7 @@ public class LoginPage extends BasePage{
         driver.get(StoreConstants.LOGINURL);
         fluentFindAndType(LoginPage.class, this.userName,userName);
         fluentFindAndType(LoginPage.class, this.passWord,passWord);
+
         fluentFindAndClick(LoginPage.class, submit);
 
         WebElement isLogin = concurrentFind("成功界面和错误提示！",

@@ -2,6 +2,7 @@ package com.yatou.automation.store;
 
 import com.yatou.automation.common.FindBy;
 import com.yatou.automation.common.StoreAccountConstants;
+import com.yatou.automation.common.StoreConstants;
 import com.yatou.automation.utils.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -48,6 +49,9 @@ public class CustomerManagePage extends  Menu{
     @FindBy(name="receiveGid",description = "设计师")
     String designer="designer";//
 
+    @FindBy(xpath="//td[text()='流水号']/following-sibling::*[1]",description = "流水号")
+    String pipelineNo="pipelineNo";//新增预约量尺之后生成的流水号
+
     public CustomerManagePage(WebDriver driver){
         super(driver);
     }
@@ -63,17 +67,23 @@ public class CustomerManagePage extends  Menu{
         fluentFindAndClick(CustomerManagePage.class, addMeasure);
 
         fluentFindAndClick(CustomerManagePage.class, getPosition);
-        fluentFind(CustomerManagePage.class, layer);
+        fluentFind(CustomerManagePage.class, layer,null);
 
         fluentFindAndSetHtml(CustomerManagePage.class, buildingName,"自动测试");
         fluentFindAndSetHtml(CustomerManagePage.class, buildingGPS,"120.318571,30.157489");
         fluentFindAndClick(CustomerManagePage.class, save);
 
-        fluentFind(CustomerManagePage.class, layerDisplay);
+        fluentFind(CustomerManagePage.class, layerDisplay,null);
 
         fluentFindAndClick(CustomerManagePage.class, measureSpace);
+
         fluentFindAndSelectByValue(CustomerManagePage.class, designer, StoreAccountConstants.DESIGNER_USERNAME);
+
         fluentFindAndClick(CustomerManagePage.class, submit);
+
+        fluentFindReturnMessage();
+
+        StoreConstants.setPipelineNoS(fluentFind(CustomerManagePage.class, pipelineNo, null).getText().trim(),"流水号");
 
         Logger.log("新增预约量尺成功！");
     }

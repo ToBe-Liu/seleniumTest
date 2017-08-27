@@ -124,6 +124,12 @@ public class Menu extends BasePage{
         fluentFindAndClick(Menu.class,contractRegister);
         return new ContractRegisterPage(driver);
     }
+    public PipelineQueryPage clickPipelineQuery() {
+        WebDriver driver = threadDriver.get();
+        logger.debug("clickPipelineQueryDriver:"+driver);
+        fluentFindAndClick(Menu.class,pipelineQuery);
+        return new PipelineQueryPage(driver);
+    }
 
 
 }

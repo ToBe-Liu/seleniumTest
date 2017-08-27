@@ -5,13 +5,15 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.google.inject.name.Named;
+import com.yatou.automation.utils.PropertiesUtil;
+import com.yatou.automation.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.google.inject.name.Names.named;
@@ -63,6 +65,7 @@ public class StoreConstants {
                 String use = (String) p.get("use");
                 if (use == null || "".equals(use.trim())) {
                     logger.error("store.properties没有指定use属性或use属性值为空！");
+                    Assert.assertNull(1,"store.properties没有指定use属性或use属性值为空！");
                 }
                 Map<Object, Object> collect = p.entrySet().stream()
                         .filter(map -> map.getKey().toString().contains("_" + use))
@@ -82,4 +85,56 @@ public class StoreConstants {
             }
         });
     }
-}  
+
+    /**
+     * 获取流水号
+     *
+     * @return
+     */
+    public static List<String> getPipelineNoS() {
+        PropertiesUtil propertiesUtil = new PropertiesUtil();
+        String use = propertiesUtil.getProperty("use");
+        if (use == null || "".equals(use.trim())) {
+            logger.error("store.properties没有指定use属性或use属性值为空！");
+            Assert.assertNull(1,"store.properties没有指定use属性或use属性值为空！");
+        }
+        logger.debug("use:"+use);
+        String property = propertiesUtil.getProperty("pipelineNoS_" + use);
+        if (property == null){
+            return null;
+        }
+        List<String> pipelineNoS = StringUtil.splitByComma(property, String.class);
+        Set<String> set = new HashSet<>();
+        set.addAll(pipelineNoS);
+        List<String> list = new ArrayList<>();
+        list.addAll(set);
+        return list;
+    }
+
+    /**
+     * 添加流水号（在原有流水号的基础上通过逗号分开添加）
+     *
+     * @param value 需要添加的流水号
+     * @param comment 注释
+     */
+    public static void setPipelineNoS(String value,String comment) {
+        PropertiesUtil propertiesUtil = new PropertiesUtil();
+        String use = propertiesUtil.getProperty("use");
+        if (use == null || "".equals(use.trim())) {
+            logger.error("store.properties没有指定use属性或use属性值为空！");
+            Assert.assertNull(1,"store.properties没有指定use属性或use属性值为空！");
+        }
+        List<String> pipelineNoS1 = getPipelineNoS();
+        String key = "pipelineNoS_" + use;
+        if ( pipelineNoS1 != null){
+            pipelineNoS1.add(value);
+            Set<String> set = new HashSet<>();
+            set.addAll(pipelineNoS1);
+            List<String> list = new ArrayList<>();
+            list.addAll(set);
+            value = StringUtil.splice2String(list);
+        }
+        propertiesUtil.writeProperties(key,value,comment);
+    }
+
+}
