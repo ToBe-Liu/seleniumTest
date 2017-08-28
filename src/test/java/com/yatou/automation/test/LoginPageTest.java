@@ -10,7 +10,10 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.*;
 
 /**
- * Created by Administrator on 2017/8/13.
+ * 门店登录页面Test
+ *
+ * @author LiuXingHai
+ * @date 2017-08-21
  */
 
 public class LoginPageTest {

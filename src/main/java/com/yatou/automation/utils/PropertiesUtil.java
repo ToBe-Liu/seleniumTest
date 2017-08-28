@@ -12,13 +12,14 @@ public class PropertiesUtil {
     private SafeProperties props;
     //private Properties props;
     private String filePath;
-    private static final String DEFAULT_FILE_PATH = "src\\main\\resources\\store1.properties";
+    private static final String DEFAULT_FILE_PATH =
+            new File("").getAbsolutePath()+"\\src\\main\\resources\\store.properties";
 
     public PropertiesUtil(String filePath){
         readProperties(filePath);
     }    
     public PropertiesUtil(){
-        readProperties(DEFAULT_FILE_PATH);
+        readProperties(DEFAULT_FILE_PATH.replace("\\target",""));
     }
 
     private void readProperties(String filePath) {
@@ -78,7 +79,6 @@ public class PropertiesUtil {
         /*PropertiesUtil util=new PropertiesUtil();
 
         util.writeProperties("fsf","个梵蒂冈","测试");*/
-        StoreConstants.setPipelineNoS("10000406","流水号");
-
+        StoreConstants.setOrderNoS("ss","订单号");
     }        
 } 

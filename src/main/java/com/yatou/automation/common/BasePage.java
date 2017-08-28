@@ -235,6 +235,17 @@ public abstract class BasePage {
         List<String> classNames = StringUtil.splitByComma(className, String.class);
         classNames.forEach((at)->removeClass(element,at,msg));
     }
+    /**
+     * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并移除
+     *
+     * @param clazz 定义元素的类
+     * @param webElementName 元素名
+     */
+    protected void fluentFindAndRemoveElement(Class clazz, String webElementName) {
+        String msg = findDescription(clazz, webElementName);
+        WebElement element = fluentFind(clazz,webElementName,null);
+        removeElement(element,msg);
+    }
 
     /**
      * 对操作返回信息的封装
@@ -621,7 +632,8 @@ public abstract class BasePage {
         if((elementPosition) > (clientHeight-50)){
             logger.debug(msg+"元素的纵坐标："+elementPosition);
             logger.debug("浏览器窗口的高度："+clientHeight);
-            String js = String.format("window.scroll(0, %s)", (elementPosition-50));
+            //50的固定头部遮罩层再加有时候会有操作信息弹出层的50，所以减100
+            String js = String.format("window.scroll(0, %s)", (elementPosition-100));
             ((JavascriptExecutor)driver).executeScript(js);
             Logger.log("滚动页面直到[" + msg + "]可见");//这里的不可见是元素在浏览器窗口的可见性
         }

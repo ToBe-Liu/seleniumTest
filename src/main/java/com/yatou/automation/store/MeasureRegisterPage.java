@@ -51,6 +51,9 @@ public class MeasureRegisterPage extends  Menu{
     @FindBy(xpath="//label[@class='radio radio-inline']/span[text()='效果图']",description = "效果图")
     String effectFile="effectFile";//
 
+    @FindBy(xpath="//a[contains(@href,'/taskseq/index/')]",description = "流水信息")
+    String pipelineInfo="pipelineInfo";//
+
     public MeasureRegisterPage(WebDriver driver){
         super(driver);
     }
@@ -64,7 +67,7 @@ public class MeasureRegisterPage extends  Menu{
         fluentFindAndClick(MeasureRegisterPage.class, measureRegister);
 
         fluentFindAndTypeDate(MeasureRegisterPage.class, planDate,"2099-08-22");
-        Thread.sleep(3000);
+
         fluentFindAndClick(MeasureRegisterPage.class, furniture);
 
         fluentFindAndClick(MeasureRegisterPage.class, submit);
@@ -85,6 +88,7 @@ public class MeasureRegisterPage extends  Menu{
         fluentFindAndClick(MeasureRegisterPage.class, uploadPlan);
         uploadPlanFile();
         uploadEffectFile();
+        fluentFindAndClick(MeasureRegisterPage.class, pipelineInfo);//文件上传后返回到流水详情页面方便下面的操作
     }
     /**
      * 上传量尺文件

@@ -13,8 +13,6 @@ import org.openqa.selenium.support.PageFactory;
  * @date 2017-08-24
  */
 public class CommunicationRegisterPage extends  Menu{
-    @FindBy(xpath="//td/a[contains(@href,'/taskseq/index/')]",description = "流水号")
-    String pipelineNo="pipelineNo";//
 
     @FindBy(xpath="//a[contains(@href,'/taskseq/follow/')]",description = "沟通登记")
     String communicationRegister="communicationRegister";//
@@ -38,7 +36,6 @@ public class CommunicationRegisterPage extends  Menu{
      * @author LiuXingHai
      */
     public void addCommunicationRegister() throws InterruptedException {
-        fluentFindAndClick(CommunicationRegisterPage.class, pipelineNo);
 
         fluentFindAndClick(CommunicationRegisterPage.class, communicationRegister);
 

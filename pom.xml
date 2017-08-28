@@ -19,7 +19,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.9.10</version>
+            <version>6.10</version>
             <!-- 避免编译时提示jar包依赖找不到的问题-->
             <!-- <scope>test</scope> -->
         </dependency>
