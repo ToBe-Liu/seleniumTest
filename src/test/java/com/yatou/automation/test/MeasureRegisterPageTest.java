@@ -1,6 +1,6 @@
 package com.yatou.automation.test;
 
-import com.yatou.automation.store.Menu;
+import com.yatou.automation.store.StoreMenu;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
@@ -15,14 +15,14 @@ import org.testng.annotations.Test;
 @Test(groups = {"measureRegister"})
 public class MeasureRegisterPageTest {
     public static ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();//
-    public static Menu menu ;
+    public static StoreMenu storeMenu;
     public String pipelineNo;
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MeasureRegisterPageTest.class);
     @BeforeClass
     public void setupClass() {
         threadDriver = LoginPageTest.threadDriver;
-        menu = new Menu(threadDriver.get());
+        storeMenu = new StoreMenu(threadDriver.get());
     }
 
     public MeasureRegisterPageTest(String pipelineNo){
@@ -33,7 +33,7 @@ public class MeasureRegisterPageTest {
     public void testPipelineQuery() throws InterruptedException {
         WebDriver driver = threadDriver.get();
         logger.debug("流水查询测试driver:"+driver);
-        //menu.clickPipelineQuery().pipelineQuery(pipelineNo);
+        //storeMenu.clickPipelineQuery().pipelineQuery(pipelineNo);
         System.out.println(pipelineNo);
     }
 

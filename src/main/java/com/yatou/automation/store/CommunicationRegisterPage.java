@@ -12,7 +12,7 @@ import org.openqa.selenium.support.PageFactory;
  * @author LiuXingHai
  * @date 2017-08-24
  */
-public class CommunicationRegisterPage extends  Menu{
+public class CommunicationRegisterPage extends StoreMenu {
 
     @FindBy(xpath="//a[contains(@href,'/taskseq/follow/')]",description = "沟通登记")
     String communicationRegister="communicationRegister";//
@@ -37,13 +37,13 @@ public class CommunicationRegisterPage extends  Menu{
      */
     public void addCommunicationRegister() throws InterruptedException {
 
-        fluentFindAndClick(CommunicationRegisterPage.class, communicationRegister);
+        fluentFindAndClick(this.getClass(), communicationRegister);
 
-        fluentFindAndType(CommunicationRegisterPage.class, content,"自动测试");
+        fluentFindAndType(this.getClass(), content,"自动测试");
 
-        fluentFindAndClick(CommunicationRegisterPage.class, dealPoint);
+        fluentFindAndClick(this.getClass(), dealPoint);
 
-        fluentFindAndClick(CommunicationRegisterPage.class, submit);
+        fluentFindAndClick(this.getClass(), submit);
 
         fluentFindReturnMessage();
 

@@ -14,7 +14,7 @@ import org.openqa.selenium.support.PageFactory;
  * @author LiuXingHai
  * @date 2017-08-18
  */
-public class CustomerManagePage extends  Menu{
+public class CustomerManagePage extends StoreMenu {
 
     @FindBy(xpath="//td/a[contains(@href,'/customer/detail/')]",description = "客户号")
     String customerNo="customerNo";//
@@ -62,28 +62,28 @@ public class CustomerManagePage extends  Menu{
      */
     public void addMeasure() throws InterruptedException {
 
-        fluentFindAndClick(CustomerManagePage.class, customerNo);
+        fluentFindAndClick(this.getClass(), customerNo);
 
-        fluentFindAndClick(CustomerManagePage.class, addMeasure);
+        fluentFindAndClick(this.getClass(), addMeasure);
 
-        fluentFindAndClick(CustomerManagePage.class, getPosition);
-        fluentFind(CustomerManagePage.class, layer,null);
+        fluentFindAndClick(this.getClass(), getPosition);
+        fluentFind(this.getClass(), layer,null);
 
-        fluentFindAndSetHtml(CustomerManagePage.class, buildingName,"自动测试");
-        fluentFindAndSetHtml(CustomerManagePage.class, buildingGPS,"120.318571,30.157489");
-        fluentFindAndClick(CustomerManagePage.class, save);
+        fluentFindAndSetHtml(this.getClass(), buildingName,"自动测试");
+        fluentFindAndSetHtml(this.getClass(), buildingGPS,"120.318571,30.157489");
+        fluentFindAndClick(this.getClass(), save);
 
-        fluentFind(CustomerManagePage.class, layerDisplay,null);
+        fluentFind(this.getClass(), layerDisplay,null);
 
-        fluentFindAndClick(CustomerManagePage.class, measureSpace);
+        fluentFindAndClick(this.getClass(), measureSpace);
 
-        fluentFindAndSelectByValue(CustomerManagePage.class, designer, StoreAccountConstants.DESIGNER_USERNAME);
+        fluentFindAndSelectByValue(this.getClass(), designer, StoreAccountConstants.DESIGNER_USERNAME);
 
-        fluentFindAndClick(CustomerManagePage.class, submit);
+        fluentFindAndClick(this.getClass(), submit);
 
         fluentFindReturnMessage();
 
-        StoreConstants.setPipelineNoS(fluentFind(CustomerManagePage.class, pipelineNo, null).getText().trim(),"流水号");
+        StoreConstants.setPipelineNoS(fluentFind(this.getClass(), pipelineNo, null).getText().trim(),"流水号");
 
         Logger.log("新增预约量尺成功！");
     }

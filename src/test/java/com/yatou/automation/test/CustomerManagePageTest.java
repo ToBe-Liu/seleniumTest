@@ -1,6 +1,6 @@
 package com.yatou.automation.test;
 
-import com.yatou.automation.store.Menu;
+import com.yatou.automation.store.StoreMenu;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
@@ -15,19 +15,19 @@ import org.testng.annotations.Test;
 @Test(groups = {"customerManage"})
 public class CustomerManagePageTest {
     public static ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();//
-    public static Menu menu ;
+    public static StoreMenu storeMenu;
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(CustomerManagePageTest.class);
     @BeforeClass
     public void setupClass() {
         threadDriver = LoginPageTest.threadDriver;
-        menu = new Menu(threadDriver.get());
+        storeMenu = new StoreMenu(threadDriver.get());
     }
 
     @Test(description = "新增预约量尺测试")
     public void testAddMeasure() throws InterruptedException {
         WebDriver driver = threadDriver.get();
         logger.debug("新增预约量尺测试driver:"+driver);
-        //menu.clickCustomerManage().addMeasure();
+        //storeMenu.clickCustomerManage().addMeasure();
     }
 
 }

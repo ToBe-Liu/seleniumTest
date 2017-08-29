@@ -11,7 +11,7 @@ import org.openqa.selenium.support.PageFactory;
  * @author LiuXingHai
  * @date 2017-08-15
  */
-public class StoreCenterPage extends  Menu{
+public class StoreCenterPage extends StoreMenu {
 
     @FindBy(name="userNo")
     String userName;//用户名

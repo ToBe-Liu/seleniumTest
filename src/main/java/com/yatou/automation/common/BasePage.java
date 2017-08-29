@@ -1,6 +1,6 @@
 package com.yatou.automation.common;
 
-import com.yatou.automation.store.Menu;
+import com.yatou.automation.store.StoreMenu;
 import com.yatou.automation.utils.Logger;
 import com.yatou.automation.utils.StringUtil;
 import org.openqa.selenium.*;
@@ -143,7 +143,7 @@ public abstract class BasePage {
         WebElement element = fluentFind(clazz,webElementName,null);
         removeAttribute(element,"readonly",msg); //移除输入框的只读属性不然无法直接设置日期
         type(element,date,msg);
-        fluentFindAndClick(Menu.class,"header");//点击头部，以便使日期弹出框消失
+        fluentFindAndClick(StoreMenu.class,"header");//点击头部，以便使日期弹出框消失
     }
     /**
      * 在{@link #timeout}内每隔{@link #timePolling}查找一个WebElement并上传指定的文件
@@ -251,7 +251,7 @@ public abstract class BasePage {
      * 对操作返回信息的封装
      */
     protected void fluentFindReturnMessage() {
-        WebElement returnMessage = fluentFind(Menu.class, "message",null);
+        WebElement returnMessage = fluentFind(StoreMenu.class, "message",null);
         Logger.log("操作返回信息:["+returnMessage.getText()+"]");
         if(!returnMessage.getText().trim().contains(StoreConstants.OPERATION_SUCCEED) ){
             Assert.assertNull(1,"操作失败：" + returnMessage.getText());
@@ -373,7 +373,7 @@ public abstract class BasePage {
     }
 
     /**
-     * 在{@link #timeout}内每隔{@link #timePolling}并发的查找多个页面元素，任意找到其中一个就返回找到的元素
+     * 在{@link #timeout}内每隔{@link #timePolling}查找多个页面元素，任意找到其中一个就返回找到的元素
      *
      * @param msg 元素描述
      * @param isTrue 查找一个元素的Function
@@ -497,7 +497,8 @@ public abstract class BasePage {
     }
     /**
      * 下拉直接设定指定的值
-     *（有些元素调用selenium的selectByValue方法会报错，所以直接设定）
+     *（有些元素调用{@link #selectByValue}方法会报错，所以直接设定）
+     *
      * @param element 指定的元素
      * @param element 指定的值
      * @param msg 元素描述

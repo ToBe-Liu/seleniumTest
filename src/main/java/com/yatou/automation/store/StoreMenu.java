@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * @author LiuXingHai
  * @date 2017-08-15
  */
-public class Menu extends BasePage{
+public class StoreMenu extends BasePage{
 
     @FindBy(linkText="个人中心",description = "个人中心")
     String userCenter="userCenter";
@@ -79,11 +79,17 @@ public class Menu extends BasePage{
     @FindBy(id="header", description = "头部")
     String header="header";
 
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Menu.class);
+    @FindBy(className="layui-layer-btn0", description = "确定")
+    String confirm="confirm";
+
+    @FindBy(className="layui-layer-shade",description = "弹出遮罩层")
+    String layerShade="layerShade";//
+
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(StoreMenu.class);
     /*
      * 构造方法
      */
-    public Menu(WebDriver driver) {
+    public StoreMenu(WebDriver driver) {
         super(driver);
     }
 
@@ -100,36 +106,46 @@ public class Menu extends BasePage{
     public CustomerManagePage clickCustomerManage() {
         WebDriver driver = threadDriver.get();
         logger.debug("clickCustomerManageDriver:"+driver);
-        fluentFindAndClick(Menu.class,customerManage);
+        fluentFindAndClick(StoreMenu.class,customerManage);
         return new CustomerManagePage(driver);
     }
 
     public MeasureRegisterPage clickMeasureRegister() {
         WebDriver driver = threadDriver.get();
         logger.debug("clickMeasureRegisterDriver:"+driver);
-        fluentFindAndClick(Menu.class,measureRegister);
+        fluentFindAndClick(StoreMenu.class,measureRegister);
         return new MeasureRegisterPage(driver);
     }
 
     public CommunicationRegisterPage clickCommunicationRegister() {
         WebDriver driver = threadDriver.get();
         logger.debug("clickCommunicationRegisterDriver:"+driver);
-        fluentFindAndClick(Menu.class,communicationRegister);
+        fluentFindAndClick(StoreMenu.class,communicationRegister);
         return new CommunicationRegisterPage(driver);
     }
 
     public ContractRegisterPage clickContractRegister() {
         WebDriver driver = threadDriver.get();
         logger.debug("clickContractRegisterDriver:"+driver);
-        fluentFindAndClick(Menu.class,contractRegister);
+        fluentFindAndClick(StoreMenu.class,contractRegister);
         return new ContractRegisterPage(driver);
     }
     public PipelineQueryPage clickPipelineQuery() {
         WebDriver driver = threadDriver.get();
         logger.debug("clickPipelineQueryDriver:"+driver);
-        fluentFindAndClick(Menu.class,pipelineQuery);
+        fluentFindAndClick(StoreMenu.class,pipelineQuery);
         return new PipelineQueryPage(driver);
     }
 
-
+    /**
+     * 确认操作
+     *
+     * @author LiuXingHai
+     */
+    public void confirm() throws InterruptedException {
+        //移除弹出层遮罩层，以免对下面的操作造成影响
+        fluentFindAndRemoveElement(this.getClass(), layerShade);
+        fluentFindAndClick(this.getClass(), confirm);
+        fluentFindReturnMessage();
+    }
 }

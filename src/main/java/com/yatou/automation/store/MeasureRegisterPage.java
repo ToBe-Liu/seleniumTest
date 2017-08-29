@@ -13,7 +13,7 @@ import org.openqa.selenium.support.PageFactory;
  * @author LiuXingHai
  * @date 2017-08-22
  */
-public class MeasureRegisterPage extends  Menu{
+public class MeasureRegisterPage extends StoreMenu {
 
     @FindBy(xpath="//a[contains(@href,'/measure/create/')]",description = "量尺登记")
     String measureRegister="measureRegister";//
@@ -64,13 +64,13 @@ public class MeasureRegisterPage extends  Menu{
      */
     public void measureRegister() throws InterruptedException {
 
-        fluentFindAndClick(MeasureRegisterPage.class, measureRegister);
+        fluentFindAndClick(this.getClass(), measureRegister);
 
-        fluentFindAndTypeDate(MeasureRegisterPage.class, planDate,"2099-08-22");
+        fluentFindAndTypeDate(this.getClass(), planDate,"2099-08-22");
 
-        fluentFindAndClick(MeasureRegisterPage.class, furniture);
+        fluentFindAndClick(this.getClass(), furniture);
 
-        fluentFindAndClick(MeasureRegisterPage.class, submit);
+        fluentFindAndClick(this.getClass(), submit);
 
         fluentFindReturnMessage();
         Logger.log("量尺登记成功！");
@@ -82,13 +82,13 @@ public class MeasureRegisterPage extends  Menu{
      */
     public void uploadAllFile() throws InterruptedException {
 
-        fluentFindAndClick(MeasureRegisterPage.class, uploadMeasureFiles);
+        fluentFindAndClick(this.getClass(), uploadMeasureFiles);
         uploadMeasureFile();
 
-        fluentFindAndClick(MeasureRegisterPage.class, uploadPlan);
+        fluentFindAndClick(this.getClass(), uploadPlan);
         uploadPlanFile();
         uploadEffectFile();
-        fluentFindAndClick(MeasureRegisterPage.class, pipelineInfo);//文件上传后返回到流水详情页面方便下面的操作
+        fluentFindAndClick(this.getClass(), pipelineInfo);//文件上传后返回到流水详情页面方便下面的操作
     }
     /**
      * 上传量尺文件
@@ -117,7 +117,7 @@ public class MeasureRegisterPage extends  Menu{
      */
     public void uploadEffectFile() throws InterruptedException {
 
-        fluentFindAndClick(MeasureRegisterPage.class, effectFile);
+        fluentFindAndClick(this.getClass(), effectFile);
         uploadFile(StoreConstants.EFFECT_FILE);
         Logger.log("上传效果图文件成功！");
     }
@@ -128,16 +128,16 @@ public class MeasureRegisterPage extends  Menu{
      */
     private void uploadFile(String filePath) throws InterruptedException {
 
-        fluentFindAndSelectByValue(MeasureRegisterPage.class, parentSpaceType, StoreConstants.PARENT_SPACE_TYPE);
-        fluentFindAndSelectByValue(MeasureRegisterPage.class, spaceType, StoreConstants.SPACE_TYPE);
+        fluentFindAndSelectByValue(this.getClass(), parentSpaceType, StoreConstants.PARENT_SPACE_TYPE);
+        fluentFindAndSelectByValue(this.getClass(), spaceType, StoreConstants.SPACE_TYPE);
 
-        fluentFindAndType(MeasureRegisterPage.class, price,"10000");
+        fluentFindAndType(this.getClass(), price,"10000");
 
-        fluentFindAndTypeFile(MeasureRegisterPage.class, uploadInput,filePath);
+        fluentFindAndTypeFile(this.getClass(), uploadInput,filePath);
 
-        fluentFind(MeasureRegisterPage.class, uploadSucceed,null);
+        fluentFind(this.getClass(), uploadSucceed,null);
 
-        fluentFindAndClick(MeasureRegisterPage.class, submit);
+        fluentFindAndClick(this.getClass(), submit);
 
         fluentFindReturnMessage();
     }

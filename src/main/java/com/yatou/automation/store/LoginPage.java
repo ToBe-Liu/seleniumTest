@@ -49,13 +49,13 @@ public class LoginPage extends BasePage{
         logger.debug("loginDriver:"+driver);
 
         driver.get(StoreConstants.LOGINURL);
-        fluentFindAndType(LoginPage.class, this.userName,userName);
-        fluentFindAndType(LoginPage.class, this.passWord,passWord);
+        fluentFindAndType(this.getClass(), this.userName,userName);
+        fluentFindAndType(this.getClass(), this.passWord,passWord);
 
-        fluentFindAndClick(LoginPage.class, submit);
+        fluentFindAndClick(this.getClass(), submit);
 
         WebElement isLogin = concurrentFind("成功界面和错误提示！",
-                findElement(Menu.class, "logout"),
+                findElement(StoreMenu.class, "logout"),
                 findElement(LoginPage.class, layer));
         if(isLogin == null ){
             Assert.assertNull(1,"登录失败！");

@@ -14,7 +14,7 @@ import org.openqa.selenium.support.PageFactory;
  * @author LiuXingHai
  * @date 2017-08-23
  */
-public class ContractRegisterPage extends  Menu{
+public class ContractRegisterPage extends StoreMenu {
     @FindBy(xpath="//td/a[contains(@href,'/taskseq/index/')]",description = "流水号")
     String pipelineNo="pipelineNo";
 
@@ -97,15 +97,15 @@ public class ContractRegisterPage extends  Menu{
      * @author LiuXingHai
      */
     public void addContractRegister() throws InterruptedException {
-        fluentFindAndClick(ContractRegisterPage.class, pipelineNo);
-        fluentFindAndClick(ContractRegisterPage.class, contractRegister);
-        fluentFindAndType(ContractRegisterPage.class, contNo, "TEST"+ RandomUtil.code(10));
-        fluentFindAndType(ContractRegisterPage.class, amount, "10000");
-        fluentFindAndTypeDate(ContractRegisterPage.class, deliveryDate,"2099-08-22");
-        fluentFindAndTypeDate(ContractRegisterPage.class, lastDate,"2099-08-21");
-        fluentFindAndClick(ContractRegisterPage.class, buyReason);
+        fluentFindAndClick(this.getClass(), pipelineNo);
+        fluentFindAndClick(this.getClass(), contractRegister);
+        fluentFindAndType(this.getClass(), contNo, "TEST"+ RandomUtil.code(10));
+        fluentFindAndType(this.getClass(), amount, "10000");
+        fluentFindAndTypeDate(this.getClass(), deliveryDate,"2099-08-22");
+        fluentFindAndTypeDate(this.getClass(), lastDate,"2099-08-21");
+        fluentFindAndClick(this.getClass(), buyReason);
 
-        fluentFindAndClick(ContractRegisterPage.class, idSubmit);
+        fluentFindAndClick(this.getClass(), idSubmit);
 
         fluentFindReturnMessage();
 
@@ -117,13 +117,13 @@ public class ContractRegisterPage extends  Menu{
      * @author LiuXingHai
      */
     public void addSpace() throws InterruptedException {
-        fluentFindAndClick(ContractRegisterPage.class, pipelineNo);
-        fluentFindAndClick(ContractRegisterPage.class, addSpace);
+        fluentFindAndClick(this.getClass(), pipelineNo);
+        fluentFindAndClick(this.getClass(), addSpace);
 
-        fluentFindAndSelectByValue(ContractRegisterPage.class, parentSpaceType, StoreConstants.PARENT_SPACE_TYPE);
-        fluentFindAndSelectByValue(ContractRegisterPage.class, spaceType, StoreConstants.SPACE_TYPE);
+        fluentFindAndSelectByValue(this.getClass(), parentSpaceType, StoreConstants.PARENT_SPACE_TYPE);
+        fluentFindAndSelectByValue(this.getClass(), spaceType, StoreConstants.SPACE_TYPE);
 
-        fluentFindAndClick(ContractRegisterPage.class, submit);
+        fluentFindAndClick(this.getClass(), submit);
 
         fluentFindReturnMessage();
 
@@ -136,19 +136,19 @@ public class ContractRegisterPage extends  Menu{
      */
     public void addOrder() throws InterruptedException {
 
-        fluentFindAndClick(ContractRegisterPage.class, addOrder);
+        fluentFindAndClick(this.getClass(), addOrder);
 
         //不知道什么原因（可能是前端用的插件导致的）这里的input框直接sendKeys会报错，所以换成设置属性
-        fluentFindAndSetAttribute(ContractRegisterPage.class, prodInfo,"value","自动测试");
+        fluentFindAndSetAttribute(this.getClass(), prodInfo,"value","自动测试");
 
         //不知道什么原因（可能是前端用的插件导致的）这里的select框直接点击会报错，所以换成设置属性
-        fluentFindAndSetSelectedByValue(ContractRegisterPage.class, tagName, StoreConstants.TAG_NAME);
+        fluentFindAndSetSelectedByValue(this.getClass(), tagName, StoreConstants.TAG_NAME);
 
-        fluentFindAndClick(ContractRegisterPage.class, submit);
+        fluentFindAndClick(this.getClass(), submit);
 
         fluentFindReturnMessage();
 
-        String orderNo = fluentFind(ContractRegisterPage.class, this.orderNo, null).getText().trim();
+        String orderNo = fluentFind(this.getClass(), this.orderNo, null).getText().trim();
         StoreConstants.setOrderNoS(orderNo,"订单号");
         Logger.log("新增订单["+orderNo+"]成功！");
     }
@@ -159,25 +159,25 @@ public class ContractRegisterPage extends  Menu{
      */
     public void uploadCreateOrderFile() throws InterruptedException {
 
-        fluentFindAndClick(ContractRegisterPage.class, uploadCreateOrderFile);
+        fluentFindAndClick(this.getClass(), uploadCreateOrderFile);
 
-        fluentFindAndTypeFile(ContractRegisterPage.class, uploadInput,StoreConstants.CREATE_ORDER_FILE);
+        fluentFindAndTypeFile(this.getClass(), uploadInput,StoreConstants.CREATE_ORDER_FILE);
 
-        fluentFind(ContractRegisterPage.class, uploadSucceed,null);
+        fluentFind(this.getClass(), uploadSucceed,null);
 
-        fluentFindAndClick(ContractRegisterPage.class, submit);
-
-        fluentFindReturnMessage();
-
-        fluentFindAndClick(ContractRegisterPage.class, submitReview);
-
-        fluentFindAndClick(ContractRegisterPage.class, confirm);
+        fluentFindAndClick(this.getClass(), submit);
 
         fluentFindReturnMessage();
 
-        fluentFindAndRemoveElement(ContractRegisterPage.class, layerShade);
+        fluentFindAndClick(this.getClass(), submitReview);
 
-        fluentFindAndClick(ContractRegisterPage.class, pipelineInfo);
+        fluentFindAndClick(this.getClass(), confirm);
+
+        fluentFindReturnMessage();
+
+        fluentFindAndRemoveElement(this.getClass(), layerShade);
+
+        fluentFindAndClick(this.getClass(), pipelineInfo);
 
         Logger.log("上传建单文件成功！");
     }

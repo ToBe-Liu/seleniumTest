@@ -11,7 +11,7 @@ import org.openqa.selenium.support.PageFactory;
  * @author LiuXingHai
  * @date 2017-08-15
  */
-public class UserCenterPage extends  Menu{
+public class UserCenterPage extends StoreMenu {
 
     @FindBy(id="logout")
     String logout;//退出登录

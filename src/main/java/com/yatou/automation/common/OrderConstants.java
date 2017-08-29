@@ -19,51 +19,24 @@ import java.util.stream.Collectors;
 import static com.google.inject.name.Names.named;
 
 /**
- * 门店常量
+ * 平台常量
  *
  * @author LiuXingHai
  * @date 2017-08-15
  */
-public class StoreConstants {
+public class OrderConstants {
 
     public static final String OPERATION_SUCCEED = "操作成功";//操作返回信息
     public static final String LOGOUT = "退出登录";
     @Inject
-    @Named("store.loginURL")
-    public static String LOGINURL;
+    @Named("order.SETTLEMENT_TYPE")
+    public static String SETTLEMENT_TYPE;//结算方式：0 直减 1 折扣率
     @Inject
-    @Named("store.space_type")
-    public static String SPACE_TYPE;
-    @Inject
-    @Named("store.parent_space_type")
-    public static String PARENT_SPACE_TYPE;
-    @Inject
-    @Named("store.measure_file")
-    public static String MEASURE_FILE;
-    @Inject
-    @Named("store.plan_file")
-    public static String PLAN_FILE;
-    @Inject
-    @Named("store.effect_file")
-    public static String EFFECT_FILE;
-    @Inject
-    @Named("store.create_order_file")
-    public static String CREATE_ORDER_FILE;
-    @Inject
-    @Named("store.tag_name")
-    public static String TAG_NAME;
-    @Inject
-    @Named("store.add_order_count")
-    public static String ADD_ORDER_COUNT;
-    @Inject
-    @Named("store.add_pipeline_count")
-    public static String ADD_PIPELINE_COUNT;
-    @Inject
-    @Named("store.order_resupply_type")
-    public static String ORDER_RESUPPLY_TYPE;
+    @Named("order.discount")
+    public static String DISCOUNT;//直减金额/折扣率
 
 
-    private static final Logger logger = LoggerFactory.getLogger(StoreConstants.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrderConstants.class);
 
     static {
         com.google.inject.Injector injector = Guice.createInjector(new Module() {
@@ -72,15 +45,15 @@ public class StoreConstants {
                 Properties p = new Properties();
                 try {
                     p.load(new InputStreamReader(this.getClass()
-                            .getResourceAsStream("/store.properties")));
+                            .getResourceAsStream("/order.properties")));
                 } catch (IOException e) {
                     e.printStackTrace();
                     assert false;
                 }
                 String use = (String) p.get("use");
                 if (use == null || "".equals(use.trim())) {
-                    logger.error("store.properties没有指定use属性或use属性值为空！");
-                    Assert.assertNull(1,"store.properties没有指定use属性或use属性值为空！");
+                    logger.error("order.properties没有指定use属性或use属性值为空！");
+                    Assert.assertNull(1,"order.properties没有指定use属性或use属性值为空！");
                 }
                 Map<Object, Object> collect = p.entrySet().stream()
                         .filter(map -> map.getKey().toString().contains("_" + use))
@@ -88,8 +61,8 @@ public class StoreConstants {
                 collect.forEach((k,v) -> {
                     String key = (String) k;
                     String value = (String) v;
-                    binder.bindConstant().annotatedWith(named("store." + key)).to(value);
-                    binder.requestStaticInjection(StoreConstants.class);
+                    binder.bindConstant().annotatedWith(named("order." + key)).to(value);
+                    binder.requestStaticInjection(OrderConstants.class);
                 });
                 /*while (e.hasMoreElements()) {
                     String key = (String) e.nextElement();
@@ -138,24 +111,6 @@ public class StoreConstants {
         setProperties("orderNoS",value,comment);
     }
     /**
-     * 获取补单号
-     *
-     * @return
-     */
-    public static List<String> getOrderResupplyNoS() {
-        return getProperties("orderResupplyNoS");
-    }
-
-    /**
-     * 添加补单号（在原有补单号的基础上通过逗号分开添加）
-     *
-     * @param value 需要添加的补单号
-     * @param comment 注释
-     */
-    public static void setOrderResupplyNoS(String value,String comment) {
-        setProperties("orderResupplyNoS",value,comment);
-    }
-    /**
      * 根据key获取List<value>
      *
      * @param key
@@ -165,8 +120,8 @@ public class StoreConstants {
         PropertiesUtil propertiesUtil = new PropertiesUtil();
         String use = propertiesUtil.getProperty("use");
         if (use == null || "".equals(use.trim())) {
-            logger.error("store.properties没有指定use属性或use属性值为空！");
-            Assert.assertNull(1,"store.properties没有指定use属性或use属性值为空！");
+            logger.error("order.properties没有指定use属性或use属性值为空！");
+            Assert.assertNull(1,"order.properties没有指定use属性或use属性值为空！");
         }
         logger.debug("use:"+use);
         String property = propertiesUtil.getProperty(key+"_" + use);
@@ -192,8 +147,8 @@ public class StoreConstants {
         PropertiesUtil propertiesUtil = new PropertiesUtil();
         String use = propertiesUtil.getProperty("use");
         if (use == null || "".equals(use.trim())) {
-            logger.error("store.properties没有指定use属性或use属性值为空！");
-            Assert.assertNull(1,"store.properties没有指定use属性或use属性值为空！");
+            logger.error("order.properties没有指定use属性或use属性值为空！");
+            Assert.assertNull(1,"order.properties没有指定use属性或use属性值为空！");
         }
         List<String> properties = getProperties(key);
         key = key + "_" + use;

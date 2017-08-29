@@ -1,7 +1,7 @@
 package com.yatou.automation.test;
 
 import com.yatou.automation.store.ContractRegisterPage;
-import com.yatou.automation.store.Menu;
+import com.yatou.automation.store.StoreMenu;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
@@ -16,14 +16,14 @@ import org.testng.annotations.Test;
 
 public class PipelineQueryPageTest {
     public static ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();//
-    public static Menu menu ;
+    public static StoreMenu storeMenu;
     public String pipelineNo;
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(PipelineQueryPageTest.class);
     @BeforeClass
     public void setupClass() {
         threadDriver = LoginPageTest.threadDriver;
-        menu = new Menu(threadDriver.get());
+        storeMenu = new StoreMenu(threadDriver.get());
     }
 
     public PipelineQueryPageTest(String pipelineNo){
@@ -34,7 +34,7 @@ public class PipelineQueryPageTest {
     public void testPipelineQuery() throws InterruptedException {
         WebDriver driver = threadDriver.get();
         logger.debug("流水查询测试driver:"+driver);
-        menu.clickPipelineQuery().pipelineQuery(pipelineNo);
+        storeMenu.clickPipelineQuery().pipelineQuery(pipelineNo);
     }
 
     @Test(description = "量尺登记测试")
@@ -62,13 +62,13 @@ public class PipelineQueryPageTest {
     public void testAddContractRegister() throws InterruptedException {
         WebDriver driver = threadDriver.get();
         logger.debug("合同登记测试driver:"+driver);
-        //menu.clickContractRegister().addContractRegister();
+        //storeMenu.clickContractRegister().addContractRegister();
     }
     @Test(description = "新增空间测试")
     public void testAddSpace() throws InterruptedException {
         WebDriver driver = threadDriver.get();
         logger.debug("新增空间测试driver:"+driver);
-        //menu.clickContractRegister().addSpace();
+        //storeMenu.clickContractRegister().addSpace();
     }
     @Test(description = "新增订单测试")
     public void testAddOrder() throws InterruptedException {
