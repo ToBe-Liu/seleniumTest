@@ -28,6 +28,7 @@ public class StoreConstants {
 
     public static final String OPERATION_SUCCEED = "操作成功";//操作返回信息
     public static final String LOGOUT = "退出登录";
+    public static List<Object> result = new ArrayList<>();
     @Inject
     @Named("store.loginURL")
     public static String LOGINURL;
@@ -118,6 +119,9 @@ public class StoreConstants {
      */
     public static void setPipelineNoS(String value,String comment) {
         setProperties("pipelineNoS",value,comment);
+        List<String> pipelineNoS = getProperties("pipelineNoS");
+        result.addAll(pipelineNoS);
+
     }
     /**
      * 获取订单号

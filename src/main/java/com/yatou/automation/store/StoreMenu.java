@@ -68,10 +68,10 @@ public class StoreMenu extends BasePage{
     String storeStatistics="storeStatistics";
 
     @FindBy(id="logout",description = "退出登录")
-    String logout;//
+    String logout="logout";//
 
-    @FindBy(id="smallbox1",description = "操作返回信息")
-    String message;//
+    @FindBy(xpath="//div[starts-with(@id,'smallbox')]",description = "操作返回信息")
+    String message="message";//
 
     @FindBy(xpath="//div[contains(@class,'flatpickr-calendar')]", description = "日期弹出层")
     String dateLayer="dateLayer";
@@ -148,4 +148,5 @@ public class StoreMenu extends BasePage{
         fluentFindAndClick(this.getClass(), confirm);
         fluentFindReturnMessage();
     }
+
 }

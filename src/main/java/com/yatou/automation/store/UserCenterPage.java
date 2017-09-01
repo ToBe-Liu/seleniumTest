@@ -1,7 +1,7 @@
 package com.yatou.automation.store;
 
+import com.yatou.automation.common.FindBy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 /**
@@ -13,14 +13,23 @@ import org.openqa.selenium.support.PageFactory;
  */
 public class UserCenterPage extends StoreMenu {
 
-    @FindBy(id="logout")
-    String logout;//退出登录
+    @FindBy(id="logout",description = "退出登录")
+    String logout="logout";//
+
+    @FindBy(id="bot2-Msg1",description = "Yes")
+    String yes="yes";
 
     public UserCenterPage(WebDriver driver){
         super(driver);
     }
 
-    public boolean logout(){
-        return  false;
+    /**
+     * 退出登录
+     *
+     * @author LiuXingHai
+     */
+    public void logout() throws InterruptedException {
+        fluentFindAndClick(this.getClass(), logout);
+        fluentFindAndClick(this.getClass(), yes);
     }
 }

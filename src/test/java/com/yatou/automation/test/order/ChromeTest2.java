@@ -1,4 +1,4 @@
-package com.yatou.automation.test;
+package com.yatou.automation.test.order;
 
 import com.yatou.automation.listeners.TestNGListener;
 import org.openqa.selenium.WebDriver;

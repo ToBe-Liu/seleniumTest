@@ -1,4 +1,4 @@
-package com.yatou.automation.test;
+package com.yatou.automation.test.store;
 
 import com.yatou.automation.common.StoreAccountConstants;
 import com.yatou.automation.listeners.TestNGListener;
@@ -16,31 +16,26 @@ import org.testng.annotations.*;
  * @date 2017-08-21
  */
 
-public class LoginPageTest {
+public class LoginTest {
     public static ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();//
+    private LoginPage loginPage;
+
     @BeforeSuite
     public void setupSuite() {
         ChromeDriverManager.getInstance().useTaobaoMirror().setup();
-
-    }
-    @BeforeTest
-    public void setupTest() {
-        //ChromeDriverManager.getInstance().useTaobaoMirror().setup();
         //System.setProperty("webdriver.chrome.driver", "D:\\webDrivers\\chromedriver.exe");
         ChromeOptions chromeOptions = new ChromeOptions();
         //chromeOptions.addArguments("--headless");
         //chromeOptions.addArguments("--disable-gpu");
         //chromeOptions.addArguments("--window-size=1920,1080");
         WebDriver driver = new ChromeDriver(chromeOptions);
-        System.out.println("ChromeTest1:"+driver);
+        System.out.println("ConfigureTestDriver:"+driver);
         threadDriver.set(driver);
         TestNGListener.setDriver(driver);
         driver.manage().window().maximize();
-
     }
 
-
-    @AfterTest(alwaysRun = true)
+    @AfterSuite(alwaysRun = true)
     public void teardown() {
         WebDriver driver = threadDriver.get();
         if (driver != null) {
@@ -48,18 +43,14 @@ public class LoginPageTest {
         }
     }
 
+    @BeforeClass
+    public void setupClass() {
+        loginPage = new LoginPage(threadDriver.get());
+    }
+
     @Test(description = "登录测试",groups = {"login"})
     @Parameters({"username","password"})
     public void testLogin(String username, String password) throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        WebDriver driver = threadDriver.get();
-        LoginPage loginPage = new LoginPage(driver);
         loginPage.login(StoreAccountConstants.getField(username), StoreAccountConstants.getField(password));
     }
-
-    /*@Test(description = "新增预约量尺测试")
-    public void testAddMeasure() {
-        LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
-        loginPage.login(StoreAccountConstants.ADVISER_USERNAME,StoreAccountConstants.ADVISER_PASSWORD);
-    }*/
-
 }

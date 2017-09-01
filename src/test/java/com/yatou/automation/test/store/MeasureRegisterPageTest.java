@@ -1,4 +1,4 @@
-package com.yatou.automation.test;
+package com.yatou.automation.test.store;
 
 import com.yatou.automation.store.StoreMenu;
 import org.openqa.selenium.WebDriver;
@@ -21,7 +21,7 @@ public class MeasureRegisterPageTest {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MeasureRegisterPageTest.class);
     @BeforeClass
     public void setupClass() {
-        threadDriver = LoginPageTest.threadDriver;
+        threadDriver = LoginTest.threadDriver;
         storeMenu = new StoreMenu(threadDriver.get());
     }
 

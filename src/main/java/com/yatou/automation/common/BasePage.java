@@ -256,6 +256,7 @@ public abstract class BasePage {
         if(!returnMessage.getText().trim().contains(StoreConstants.OPERATION_SUCCEED) ){
             Assert.assertNull(1,"操作失败：" + returnMessage.getText());
         }
+        removeElement(returnMessage,"操作返回信息");//移除以免对下面的操作造成影响
     }
 
     /**
@@ -633,7 +634,7 @@ public abstract class BasePage {
         if((elementPosition) > (clientHeight-50)){
             logger.debug(msg+"元素的纵坐标："+elementPosition);
             logger.debug("浏览器窗口的高度："+clientHeight);
-            //50的固定头部遮罩层再加有时候会有操作信息弹出层的50，所以减100
+            //50的固定头部遮罩层，为保险起见减100
             String js = String.format("window.scroll(0, %s)", (elementPosition-100));
             ((JavascriptExecutor)driver).executeScript(js);
             Logger.log("滚动页面直到[" + msg + "]可见");//这里的不可见是元素在浏览器窗口的可见性

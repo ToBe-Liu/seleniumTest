@@ -97,7 +97,7 @@ public class ContractRegisterPage extends StoreMenu {
      * @author LiuXingHai
      */
     public void addContractRegister() throws InterruptedException {
-        fluentFindAndClick(this.getClass(), pipelineNo);
+
         fluentFindAndClick(this.getClass(), contractRegister);
         fluentFindAndType(this.getClass(), contNo, "TEST"+ RandomUtil.code(10));
         fluentFindAndType(this.getClass(), amount, "10000");
@@ -117,9 +117,8 @@ public class ContractRegisterPage extends StoreMenu {
      * @author LiuXingHai
      */
     public void addSpace() throws InterruptedException {
-        fluentFindAndClick(this.getClass(), pipelineNo);
-        fluentFindAndClick(this.getClass(), addSpace);
 
+        fluentFindAndClick(this.getClass(), addSpace);
         fluentFindAndSelectByValue(this.getClass(), parentSpaceType, StoreConstants.PARENT_SPACE_TYPE);
         fluentFindAndSelectByValue(this.getClass(), spaceType, StoreConstants.SPACE_TYPE);
 
@@ -135,6 +134,7 @@ public class ContractRegisterPage extends StoreMenu {
      * @author LiuXingHai
      */
     public void addOrder() throws InterruptedException {
+        new StoreMenu(threadDriver.get()).clickPipelineQuery().pipelineQuery("10000413");
 
         fluentFindAndClick(this.getClass(), addOrder);
 
@@ -171,11 +171,7 @@ public class ContractRegisterPage extends StoreMenu {
 
         fluentFindAndClick(this.getClass(), submitReview);
 
-        fluentFindAndClick(this.getClass(), confirm);
-
-        fluentFindReturnMessage();
-
-        fluentFindAndRemoveElement(this.getClass(), layerShade);
+        confirm();
 
         fluentFindAndClick(this.getClass(), pipelineInfo);
 

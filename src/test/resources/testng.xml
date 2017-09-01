@@ -10,9 +10,7 @@
             </dependencies>
         </groups>
         <classes>
-            <class name="com.yatou.automation.test.CustomerManagePageTest"/>
-            <class name="com.yatou.automation.test.LoginPageTest"/>
-        </classes>
+            <class name="com.yatou.automation.test.store.CustomerManageTest            <class name="com.yatou.automation.test.store.LoginTest        </classes>
 
     </test>-->
     <test name="DesignerTest" >
@@ -26,33 +24,33 @@
                 <group name="contractRegister" depends-on="login" />
                 <group name="communicationRegister" depends-on="login" />
                 <group name="customerManage" depends-on="login" />
+                <group name="pipeline" depends-on="login" />
             </dependencies>
         </groups>
         <classes>
 
-           <!-- <class name="com.yatou.automation.test.CommunicationRegisterPageTest">
+           <!-- <class name="com.yatou.automation.test.store.CommunicationRegisterPageTest">
                 <methods>
                     <include name="testAddCommunicationRegister"></include>
                 </methods>
             </class>-->
-            <class name="com.yatou.automation.test.ContractRegisterPageTest">
+            <class name="com.yatou.automation.test.store.PipelineTest">
                 <methods>
                    <!-- <include name="testAddContractRegister"></include>-->
                     <!--<include name="testAddSpace"></include>-->
                     <include name="testAddOrder"></include>
                 </methods>
             </class>
-            <!--<class name="com.yatou.automation.test.MeasureRegisterPageTest">
+            <!--<class name="com.yatou.automation.test.store.MeasureRegisterPageTest">
                 <methods>
                     <include name="testAddMeasure"></include>
                 </methods>
             </class>-->
-           <!-- <class name="com.yatou.automation.test.CustomerManagePageTest">
-                <methods>
+           <!-- <class name="com.yatou.automation.test.store.CustomerManageTest               <methods>
                     <include name="testAddMeasure"></include>
                 </methods>
             </class>-->
-            <class name="com.yatou.automation.test.LoginPageTest"/>
+            <class name="com.yatou.automation.test.store.LoginTest"/>
         </classes>
 
     </test>

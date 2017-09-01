@@ -1,10 +1,12 @@
-package com.yatou.automation.test;
+package com.yatou.automation.test.store;
 
 import com.yatou.automation.common.StoreConstants;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * 门店流水数据工厂
@@ -17,17 +19,18 @@ public class PipelineFactory {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(PipelineFactory.class);
 
-    @Factory
+    @Factory(dataProvider = "instance")
     public Object[] createInstances() throws Exception {
-        List<String> pipelineNoS = StoreConstants.getPipelineNoS();
-        Object[] result = new Object[pipelineNoS.size()];
-        logger.debug("pipelineNos:"+pipelineNoS);
-        for (int a = 0; a < pipelineNoS.size(); a++) {
-            result[a] =  new PipelineQueryPageTest(pipelineNoS.get(a));
-        }
-        return result;
+        return StoreConstants.result.toArray();
     }
-
+    @DataProvider(name = "instance")
+    public static Iterator<Object[]> getInstances(){
+        ArrayList<Object[]> alist=new ArrayList<Object[]>();
+        for (int i = 0; i < StoreConstants.result.size(); i++) {
+            alist.add(new Object[]{StoreConstants.result.get(i)});
+        }
+        return alist.iterator();
+    }
    /* @Factory
     @Parameters({"className"})
     public Object[] createInstances(String className) throws Exception {

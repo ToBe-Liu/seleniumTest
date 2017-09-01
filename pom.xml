@@ -14,6 +14,27 @@
         <argLine>-Dfile.encoding=UTF-8</argLine>
         <xmlFileName>testng.xml</xmlFileName>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <name>Team aliyun Repository</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
     <dependencies>
         <!-- 依赖testNg -->
         <dependency>
@@ -91,11 +112,9 @@
                 <version>2.19</version>
                 <configuration>
                     <suiteXmlFiles>
-                       <!-- <file>src/test/resources/testng.xml</file>-->
-                      <!-- <suiteXmlFile>src/test/resources/testng-measure1.xml</suiteXmlFile>-->
-                       <suiteXmlFile>src/test/resources/testng-measure.xml</suiteXmlFile>
+                       <suiteXmlFile>src/test/resources/${xmlFileName}</suiteXmlFile>
                     </suiteXmlFiles>
-                    <!-- <systemPropertyVariables>标签设置为false为了让log中的html在页面上正常显示,避免直接显示为html字符串 -->
+                    <!-- <systemPropertyVariables>标签设置为false为了让log中的链接和图片在页面上正常显示,避免直接显示为html字符串 -->
                     <systemPropertyVariables>
                         <org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
                     </systemPropertyVariables>

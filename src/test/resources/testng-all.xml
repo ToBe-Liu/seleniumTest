@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="createPipeline2createOrder" parallel="false" thread-count="2">
+    <!-- 家具顾问创建流水 -->
+    <test name="createPipelineTest" preserve-order="true">
+        <parameter name="username" value="ADVISER_USERNAME"></parameter>
+        <parameter name="password" value="ADVISER_PASSWORD"></parameter>
+        <!-- 如果classes里面按顺序配置的话groups可以不配 -->
+        <groups>
+            <dependencies>
+                <group name="customerManage" depends-on="login" />
+                <group name="logout" depends-on="customerManage" />
+            </dependencies>
+        </groups>
+        <classes>
+            <class name="com.yatou.automation.test.store.LoginTest"/>
+            <class name="com.yatou.automation.test.store.CustomerManageTest">
+               <!-- <methods>
+                    <include name="testAddMeasure"/>
+                </methods>-->
+            </class>
+            <class name="com.yatou.automation.test.store.LogoutTest"/>
+        </classes>
+    </test>
+    <!-- 设计师从新建的流水中创建订单 -->
+    <test name="createOrderTest" group-by-instances="true" preserve-order="true">
+        <parameter name="username" value="DESIGNER_USERNAME"></parameter>
+        <parameter name="password" value="DESIGNER_PASSWORD"></parameter>
+        <!-- 如果classes里面按顺序配置的话groups可以不配 -->
+        <groups>
+            <dependencies>
+                <group name="designer" depends-on="login" />
+                <group name="logout" depends-on="designer" />
+            </dependencies>
+        </groups>
+        <classes >
+            <class name="com.yatou.automation.test.store.LoginTest"/>
+            <class name="com.yatou.automation.test.store.DesignerTest">
+                <methods>
+                    <include name="testOnePipeline"></include>
+                </methods>
+            </class>
+            <class name="com.yatou.automation.test.store.LogoutTest"/>
+        </classes>
+    </test>
+    <listeners>
+        <!-- reportng报告监听器 -->
+        <listener class-name="org.uncommons.reportng.HTMLReporter" />
+        <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+        <!-- 失败重跑监听器 -->
+        <!-- <listener class-name="com.yatou.automation.listeners.RetryListener" />-->
+        <!-- 失败截图监听器 -->
+        <listener class-name="com.yatou.automation.listeners.TestNGListener" />
+        <!-- 方法注解监听器 -->
+        <listener class-name="com.yatou.automation.listeners.MyTransformer" />
+        <!-- 自己实现的extentrepots监听器 -->
+        <listener class-name="com.yatou.automation.listeners.extent.ExtentTestNGIReporterListener" />
+        <!-- 三方插件实现的extentrepots监听器 -->
+        <!-- <listener class-name="com.vimalselvam.testng.listener.ExtentTestNgFormatter" />-->
+    </listeners>
+</suite>
