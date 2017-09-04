@@ -134,7 +134,7 @@ public class ContractRegisterPage extends StoreMenu {
      * @author LiuXingHai
      */
     public void addOrder() throws InterruptedException {
-        new StoreMenu(threadDriver.get()).clickPipelineQuery().pipelineQuery("10000413");
+        new StoreMenu(threadDriver.get()).clickPipelineQuery().pipelineQuery("10013023");
 
         fluentFindAndClick(this.getClass(), addOrder);
 
@@ -172,6 +172,8 @@ public class ContractRegisterPage extends StoreMenu {
         fluentFindAndClick(this.getClass(), submitReview);
 
         confirm();
+
+        fluentFindLoaded();
 
         fluentFindAndClick(this.getClass(), pipelineInfo);
 
