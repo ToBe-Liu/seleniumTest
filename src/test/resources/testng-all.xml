@@ -9,7 +9,7 @@
         <groups>
             <dependencies>
                 <group name="customerManage" depends-on="login" />
-                <group name="logout" depends-on="customerManage" />
+               <!-- <group name="logout" depends-on="customerManage" />-->
             </dependencies>
         </groups>
         <classes>
@@ -19,18 +19,19 @@
                     <include name="testAddMeasure"/>
                 </methods>-->
             </class>
-            <class name="com.yatou.automation.test.store.LogoutTest"/>
+            <!-- 不配置退出登录下一个账号也能登录 -->
+           <!-- <class name="com.yatou.automation.test.store.LogoutTest"/>-->
         </classes>
     </test>
     <!-- 设计师从新建的流水中创建订单 -->
-    <test name="createOrderTest" group-by-instances="true" preserve-order="true">
+    <test name="createOrderTest" group-by-instances="true" preserve-order="true" >
         <parameter name="username" value="DESIGNER_USERNAME"></parameter>
         <parameter name="password" value="DESIGNER_PASSWORD"></parameter>
         <!-- 如果classes里面按顺序配置的话groups可以不配 -->
         <groups>
             <dependencies>
                 <group name="designer" depends-on="login" />
-                <group name="logout" depends-on="designer" />
+               <!-- <group name="logout" depends-on="designer" />-->
             </dependencies>
         </groups>
         <classes >
@@ -40,7 +41,8 @@
                     <include name="testOnePipeline"></include>
                 </methods>
             </class>
-            <class name="com.yatou.automation.test.store.LogoutTest"/>
+            <!-- 不配置退出登录下一个账号也能登录 -->
+            <!--<class name="com.yatou.automation.test.store.LogoutTest"/>-->
         </classes>
     </test>
     <listeners>

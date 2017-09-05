@@ -66,8 +66,8 @@ public class PipelineTest {
     public void testAddOrder() throws InterruptedException {
         contractRegisterPage.addOrder();
         contractRegisterPage.uploadCreateOrderFile();
-        Thread.sleep(3000);
     }
+
 
 
 }

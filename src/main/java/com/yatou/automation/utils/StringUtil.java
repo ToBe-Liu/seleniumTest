@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class StringUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(StringUtil.class);
@@ -201,6 +203,92 @@ public final class StringUtil {
 		return splice2String(source,",");
 	}
 
+
+	/**
+	 * Capitalize a {@code String}, changing the first letter to
+	 * upper case as per {@link Character#toUpperCase(char)}.
+	 * No other letters are changed.
+	 * @param str the {@code String} to capitalize, may be {@code null}
+	 * @return the capitalized {@code String}, or {@code null} if the supplied
+	 * string is {@code null}
+	 */
+	public static String capitalize(String str) {
+		return changeFirstCharacterCase(str, true);
+	}
+
+	/**
+	 * Uncapitalize a {@code String}, changing the first letter to
+	 * lower case as per {@link Character#toLowerCase(char)}.
+	 * No other letters are changed.
+	 * @param str the {@code String} to uncapitalize, may be {@code null}
+	 * @return the uncapitalized {@code String}, or {@code null} if the supplied
+	 * string is {@code null}
+	 */
+	public static String uncapitalize(String str) {
+		return changeFirstCharacterCase(str, false);
+	}
+
+	private static String changeFirstCharacterCase(String str, boolean capitalize) {
+		if (str == null || str.length() == 0) {
+			return str;
+		}
+		StringBuilder sb = new StringBuilder(str.length());
+		if (capitalize) {
+			sb.append(Character.toUpperCase(str.charAt(0)));
+		}
+		else {
+			sb.append(Character.toLowerCase(str.charAt(0)));
+		}
+		sb.append(str.substring(1));
+		return sb.toString();
+	}
+	/**
+	 * 下划线格式字符串转换成驼峰格式字符串
+	 * eg: player_id -> playerId;<br>
+	 * player_name -> playerName;
+	 */
+	public static String underScore2CamelCase(String strs) {
+
+		if (strs == null || !strs.contains("_")) {
+			return strs;
+		}
+		StringBuilder sb = new StringBuilder("");
+		String[] elems = strs.split("_");
+		for (int i = 0; i < elems.length; i++) {
+			String elem = elems[i].toLowerCase();
+			if (i != 0) {
+				char first = elem.toCharArray()[0];
+				sb.append((char) (first - 32)).append(elem.substring(1));
+			} else {
+				sb.append(elem);
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * @param param 待转换字符串
+	 *              驼峰格式字符串 转换成 下划线格式字符串
+	 *              eg: playerId -> player_id;<br>
+	 *              playerName -> player_name;
+	 */
+	public static String camelCase2Underscore(String param) {
+		Pattern p = Pattern.compile("[A-Z]");
+		if (param == null || param.equals("")) {
+			return "";
+		}
+		StringBuilder builder = new StringBuilder(param);
+		Matcher mc = p.matcher(param);
+		int i = 0;
+		while (mc.find()) {
+			builder.replace(mc.start() + i, mc.end() + i, "_" + mc.group().toLowerCase());
+			i++;
+		}
+		if ('_' == builder.charAt(0)) {
+			builder.deleteCharAt(0);
+		}
+		return builder.toString();
+	}
 
 	public static void main(String[] args) {
 		String s = "153,gh";

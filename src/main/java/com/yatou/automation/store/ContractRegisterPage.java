@@ -134,7 +134,6 @@ public class ContractRegisterPage extends StoreMenu {
      * @author LiuXingHai
      */
     public void addOrder() throws InterruptedException {
-        new StoreMenu(threadDriver.get()).clickPipelineQuery().pipelineQuery("10013023");
 
         fluentFindAndClick(this.getClass(), addOrder);
 
@@ -173,10 +172,10 @@ public class ContractRegisterPage extends StoreMenu {
 
         confirm();
 
-        fluentFindLoaded();
-
+        fluentFind(StoreMenu.class, "messageDisappear",null);//上一步提交后会刷新页面，这里等刷新的弹出框消失
         fluentFindAndClick(this.getClass(), pipelineInfo);
 
         Logger.log("上传建单文件成功！");
     }
+
 }

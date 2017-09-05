@@ -73,6 +73,9 @@ public class StoreMenu extends BasePage{
     @FindBy(xpath="//div[starts-with(@id,'smallbox')]",description = "操作返回信息")
     String message="message";//
 
+    @FindBy(xpath="//div[@id='divSmallBoxes'][not(div[starts-with(@id,'smallbox')])]",description = "操作返回信息消失")
+    String messageDisappear="messageDisappear";//
+
     @FindBy(xpath="//div[contains(@class,'flatpickr-calendar')]", description = "日期弹出层")
     String dateLayer="dateLayer";
 

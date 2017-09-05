@@ -68,7 +68,7 @@ public abstract class BasePage {
         }
         String msg = findDescription(clazz, webElementName);
 
-        WebDriver driver = threadDriver.get();
+
         WebElement element = null;
 
         try {
@@ -256,38 +256,9 @@ public abstract class BasePage {
         if(!returnMessage.getText().trim().contains(StoreConstants.OPERATION_SUCCEED) ){
             Assert.assertNull(1,"操作失败：" + returnMessage.getText());
         }
-        removeElement(returnMessage,"操作返回信息");//移除以免对下面的操作造成影响
+        //removeElement(returnMessage,"操作返回信息");//移除以免对下面的操作造成影响
     }
-    /**
-     * 在{@link #timeout}内每隔{@link #timePolling}判断文档是否加载完成
-     *
-     */
-    protected boolean fluentFindLoaded() {
-        Boolean aBoolean = null;
-        try {
-            Future<Boolean> future = fixedThreadPool.submit(() -> {
-                Boolean loaded = false;
-                while (true){
-                        try {
-                            loaded = isLoaded();
-                            logger.debug("Loaded:"+loaded);
-                        } catch (Exception e) {}
-                        if (loaded) {
-                            return loaded;
-                        }
-                    Thread.sleep(timePolling);//每隔500毫秒查找一遍，直到超时
-                }
-            });
-            aBoolean = future.get(timeout, timeoutUnit);
-        }catch (Exception e) {
-            e.printStackTrace();
-            Logger.log(e.getMessage());
-        }finally {
-            //fixedThreadPool.shutdown();
-            //Logger.log("关闭查找线程.");
-        }
-        return aBoolean;
-    }
+
 
     /**
      * 通过反射获取指定类中指定字段名的一个查找函数
@@ -683,28 +654,6 @@ public abstract class BasePage {
         }
         return  false;
     }
-    /**
-     * 判断当前文档是否加载完成
-     *
-     * @return 加载完成（true）反之（false）
-     */
-    protected boolean isLoaded(){
-        WebDriver driver = threadDriver.get();
 
-        logger.debug("isLoaded..."+driver);
-        String js = "return true;";
-        Boolean isLoaded = false;
-        try{
-            isLoaded =(Boolean)((JavascriptExecutor)driver).executeScript(js);
-            logger.debug("isLoaded:"+isLoaded);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if(isLoaded){
-            Logger.log("文档加载完成！");
-        }
-        return  isLoaded;
-    }
 
 }  
